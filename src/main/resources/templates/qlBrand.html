@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin-layout :: main-fragment(  ~{::title},
+                                                ~{:: #custom-style},
+                                                ~{:: #main-content},
+                                                ~{:: #custom-scripts},
+                                               )}">
+    <head>
+    <title>Brand</title>
+		<th:block id="custom-style">
+		</th:block>
+    </head>
+<body class="sb-nav-fixed">
+
+<div id="main-content"  style="margin-top:10px">	
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Tables</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Tables</li>
+                        </ol>
+                        <!-- Button trigger modal -->
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal" style="margin:10px">
+		Thêm Thương Hiệu
+	</button>
+
+<!-- Modal Create Product-->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Thêm Thương Hiệu</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form  action="/" method="POST" id="create-brand">
+
+              <div class="mb-3 col" >
+                <label for="exampleInputPassword1" class="form-label">Tên Thương Hiệu</label>
+                <input type="text" id="brandname" class="form-control" name="brandname" placeholder="Rolex">
+              </div>                
+              <div class="mb-3 col">
+                <label for="exampleInputPassword1" class="form-label">Mô tả</label>
+                <input type="text" id="description" class="form-control" name="description">
+              </div>
+
+          </form>
+        </div>
+     		<div class="modal-footer">
+        		<button type="button" class="btn btn-primary" id="btnCreate" data-dismiss="modal">Save changes</button>
+      		</div>
+      </div>
+
+    </div>
+  </div>
+
+
+<!-- Modal Create Product-->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Sửa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form  action="/" method="POST" id="update-brand">
+
+              <div class="mb-3 col" >
+                <label for="exampleInputPassword1" class="form-label">Tên Thương Hiệu</label>
+                <input type="text" id="names" class="form-control" name="names" placeholder="Rolex">
+              </div>                
+              <div class="mb-3 col">
+                <label for="exampleInputPassword1" class="form-label">Mô tả</label>
+                <input type="text" id="descriptions" class="form-control" name="descriptions">
+              </div>
+
+          </form>
+        </div>
+     		<div class="modal-footer">
+        		<button type="button" class="btn btn-primary" id="btnUpdate" data-dismiss="modal">Save changes</button>
+      		</div>
+      </div>
+
+    </div>
+  </div>
+
+        <div class="card mb-4">
+              <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                      Danh sách sản phẩm
+               </div>
+           	<div class="card-body">
+              <table class="table">
+                <thead style="border:1px solid LightGray;">
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Tên Thương Hiệu</th>
+                    <th scope="col">Mô tả</th>
+                    <th scope="col">Người thêm</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="load-table" style="border:1px solid LightGray;">   
+                 </tbody>
+              </table>
+             </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<th:block id="custom-scripts">
+  <script>
+    function loadData() {
+      $.get("/brand/all-brand").done(res=>{
+        let table='';
+        res.forEach(element => {
+          let html=`<tr>
+                <th scope="row">${element.id}</th>
+                <td>${element.brandName}</td>
+                <td>${element.description}</td>
+                <td>${element.updateBy}</td>
+                <td>
+                <button onclick="bindingInfo(this)"  type="button" class="btn btn-warning" 
+                brand-name="${element.brandName}" product-id="${element.id}" data-target= "#updateModal" data-toggle="modal">Sửa</button>
+                <button onclick="deleteProduct(this)" id="btnDelete" type="button" class="btn btn-danger" brand-id="${element.id}" disabled>Xóa</button></td>
+              </tr>`
+              table+=html;
+        });
+        $('#load-table').html(table);
+    });
+  	$.get("/get-user-info", data => {
+		document.getElementById("navbarDropdown").innerHTML = data;
+		});
+}
+    
+    $(function(){
+        loadData();
+      });
+
+
+     function deleteProduct(element){
+      let id= $(element).attr("brand-id");
+      $.ajax({
+          method:'delete',
+          url:'/brand/delete-brand?id='+id,
+          contentType:'application/json',
+          data: "",
+          success: res => {
+            alert("Xóa thành công!");
+            loadData();
+          }
+        });
+    } 
+	    
+
+	    
+	  $('#btnCreate').click((event)=>{
+	      event.preventDefault();
+	      let data={
+	    		  brandName:$("#brandname").val(),
+	    		  description:$("#description").val()
+	      }
+	 	    $.ajax({
+	 		      type:'post',
+	 		      url:'/brand/creates-brand',
+
+	 		      contentType: 'application/json',
+	 		      data : JSON.stringify(data),
+	 		      success: res => {
+	 		    	  console.log(data);
+	 		        loadData();
+	 		      }
+	 		    }); 
+	   })
+	   
+	    function bindingInfo(element){
+	    	 let brand = $(element).attr("brand-name");
+	    	 $('#names').val(brand);
+	      };
+	      
+/* 	   	 $('#btnUpdate').click((event)=>{
+		      event.preventDefault();
+		      let data={
+		    		  brandName:$("#brandname").val(),
+		    		  description:$("#description").val()
+		      }
+		 	    $.ajax({
+		 		      type:'post',
+		 		      url:'/brand/creates-brand',
+		 		      contentType: 'application/json',
+		 		      data : JSON.stringify(data),
+		 		      success: res => {
+		 		    	  console.log(data);
+		 		        loadData();
+		 		      }
+		 		    }); 
+	   }); */
+	    
+  </script>
+</th:block>    
+    
+
+</html>

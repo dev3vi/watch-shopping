@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main-layout :: main-fragment(  
+                                                ~{:: #custom-style},
+                                                ~{:: #main-content},
+                                                ~{:: #custom-script},
+                                               )}">
+<head>
+<th:block id="custom-style">
+<style>
+.priceFinal{
+	color:red;
+	font-weight: bold;
+}
+    .options{
+        width: 100%;
+        display: inline-block;
+    }
+    .option1{
+        float: right;
+        text-align: center;
+        width: 200px;
+        height: 40px ;
+        background: #ff3333;
+        margin: 5px;
+        color: #ffffff;
+        border-radius: 10px; 
+    }
+     .option2{
+        float: right;
+        color: #ffffff;
+        text-align: center;
+        width: 200px;
+        height: 40px ;
+        background: #33cc33;
+        margin: 5px;
+        border-radius: 10px;
+    }
+    .option2:hover{
+        text-decoration: none;
+        color: #ffffff;
+        background: #29a329;
+    }
+    .option1:hover{
+        text-decoration: none;
+        color: #ffffff;
+        background: #ff0000;
+    }
+        .clear{
+        clear: both;
+    } 
+    .progressbar-wrapper{
+        margin-left: 25%;
+    }
+    .progressbar {
+        counter-reset: step;
+    }
+
+    .progressbar li:before {
+        content: counter(step);
+        counter-increment: step+1; 
+    }
+    .progressbar li.active {
+        /*màu chữ*/
+        color: green;
+       /* độ dày, mỏng của chữ*/
+        font-weight: bold;  
+    }
+    .progressbar li.active:before {
+        background: #55b776   
+    }
+    .progressbar li {
+          list-style-type: none;
+          float: left;
+          width: 200px;
+          text-align: center; 
+          font-size: 12px;
+          position: relative;
+            
+    }
+    .progressbar li:before {
+        /*chiều cao giữa các dòng*/
+        line-height: 38px;
+        border: 2px solid #7d7d7d;
+        width: 40px;
+        height: 40px;
+        color: white;
+        display: block;
+        margin: 0 auto 3px auto;
+        font-size: 17px;
+        font-family: Arial, Verdana, sans-serif;
+        /*tạo hình tròn*/
+        border-radius: 50%;
+        /*text-align: center;*/
+        position: relative;
+        z-index: 1;
+        background-color: #7d7d7d;
+    }
+    .progressbar li:after {
+         width: 100%;
+         height: 2px;
+         background-color: #7d7d7d;
+         content: '';
+         position: absolute;
+         top: 20px;
+         left: -50%;
+         z-index: 0;
+    }
+    .progressbar li:first-child:after {
+         content: none;
+    }
+    .icon-active{
+        font-size:20px;
+        margin: 5px 5px;
+    }
+    .icon{
+        font-size:20px;
+        color: #7d7d7d;
+        margin: 5px 5px;
+    }
+    .process-name{
+        margin-top: 0px;
+    }   
+
+</style>
+</th:block>
+</head>                                         
+<body>
+
+<div id="main-content"  style="margin-top:10px">	
+<div class="container">
+
+<h3>Thanh toán</h3>
+        <div class="row">
+            <div class="progressbar-wrapper">
+                  <ul class="progressbar">
+                      <li class="active">
+                        <i class="fa fa-shopping-cart icon-active"></i>
+                        <p class="process-name">GIỎ HÀNG</p>
+                      </li>
+                      <li class="active">
+                        <i class="fa fa-credit-card  icon-active"></i>
+                        <p class="process-name">THANH TOÁN</p>
+                      </li>
+                      
+                      <li class="active">
+                         <i class="fa fa-check-square-o icon-active"></i>
+                        <p class="process-name">HOÀN TẤT</p>
+                      </li>
+                  </ul>
+            </div>
+        </div>
+<div>
+<div class="row">
+	<h3>CẢM ƠN BẠN ĐÃ ĐẶT HÀNG!</h3>
+	<p>TEKMart sẽ gọi lại ngay cho bạn, số điện thoại 0978717031 trong vòng 30 phút trong giờ làm việc từ 8h-21h để xác nhận đơn hàng .</p>
+	<p>Nếu bạn cần hỗ trợ ngay xin vui lòng gọi 097395 3333</p>
+</div>
+		         
+  </div>
+ 
+</div>
+</div>
+</body>
+<th:block id="custom-script">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+ <script type="text/javascript">
+/*  	let stringItem = localStorage.getItem('cart');
+ 	let listItem = stringItem.split(",");
+ 	console.log(listItem);
+ 	let k = 0;
+	let username = checkUser();
+	
+	 function submit(){
+		 let stringItemFinal = localStorage.getItem('itemPayment');
+		 console.log(JSON.parse(stringItemFinal));
+ 		let data = {  
+    			fullname: $('#fullname').val(),
+    		    address : $('#address').val(),
+    		    phone : $('#phone').val(),
+    		    item: JSON.parse(stringItemFinal) 
+    		}
+ 		console.log(data);
+		$.ajax({
+			method:'POST',
+			url:'/cart/get-oder-info',
+			contentType:'application/json',
+			data: JSON.stringify(data),
+			success: res => {	
+				alert("thêm thành công!");
+					   loadData();
+					}
+				});
+
+	 }
+	 
+	async function loadTable(){
+		await $.get("/get-user-info", data => {
+			let htmls =`
+				<div class="dropdown" style="margin-right:20px">
+				<i class="fa fa-user-circle-o"  style="color:#ffffff"></i>
+				  <button class="btn dropdown-toggle shadow-none" type="button" id="dropdownMenuButton" data-toggle="dropdown"  
+				  			style="padding: 0px;margin-top:-5px;color:#ffffff; ">	
+				  			<p id=""></p>
+				  </button>
+				  <div class="dropdown-menu dropdown-menu-right">
+				    <a class="dropdown-item" href="#">Another action</a>
+				    <a class="dropdown-item" href="#">Another action</a>
+				    <a class="dropdown-item" href="/logout">Đăng Xuất</a>		    
+				  </div>
+				</div>`	
+	 		$('.username').html(htmls);
+			document.getElementById("dropdownMenuButton").innerHTML = data;
+			});
+		
+		
+ 			let html=[];
+            let i=0;
+            let username = checkUser(); 
+            if(username!=false){
+            	$.get("cart/get-item-by-username?username="+username, data => {
+            		let count = data.length;
+            		data.forEach(element=>{		
+
+         	 	 	 		html[i] = `
+         	 	 	 		    <tr>
+         	 	 	 		      <th scope="row"><img src="${element.image}" style="width: 70px;">${element.name}</th>
+         	 	 	 		      <td  id="v${element.id}"></td>
+         	 	 	 		      <td>${element.price} vnđ</td>
+         	 	 	 		      <td  class="priceFinal"><span class="prices" id="watch${element.id}">${element.price}</span> vnđ</td>
+         	 	 	 		    </tr>`
+         	 	 	 		 $('#load-table').append(html[i]);
+         	 	 	 		i+=1;
+         	 	 	 	document.getElementById("count").innerHTML = "("+ i + ")";
+
+         	 		}); 
+            		sum(count);
+            	});
+            	
+            }else{
+            	let count = listItem.length;
+     			listItem.forEach(element=>{
+     	 	 	 	$.get( "/product/get-productdto-by-id?id="+element, function(datas) {
+     	 	 	 		html[i] = `
+     	 	 	 		    <tr>
+     	 	 	 		      <th scope="row"><img src="${datas.image}" style="width: 70px;">${datas.name}</th>
+     	 	 	 		 	  <td  id="v${element}"></td>	 	 	 		     
+     	 	 	 		    </tr>`
+     	 	 	 		 $('#load-table').append(html[i]);
+     	 	 	 		i+=1;
+     	 	 	 	document.getElementById("count").innerHTML = "("+ i + ")";
+       					if(i==count){
+       						paymentFinal();
+     					}  
+       					
+     	 	 	 		});
+
+     	 		});  
+     			
+            }
+            
+ 	}
+
+	function paymentFinal(){
+		let stringItemFinal = localStorage.getItem('itemPayment');
+		let listItemFinal = JSON.parse(stringItemFinal);
+	 	listItemFinal.forEach(element =>{	 		
+	 		var x =element.id;
+	 		document.getElementById("v"+ x).innerHTML = element.quantity;
+	 		var totalMoney =  localStorage.getItem('totalMoney');
+	 		x = parseInt(totalMoney).toLocaleString('vi', {style : 'currency', currency : 'VND'});
+	 		document.getElementById("sums").innerHTML =x;
+	 	});
+	}
+	function checkUser(){
+	    var result="";
+	    $.ajax({
+	      url:"/get-user-info",
+	      async: false,  
+	      success:function(data) {
+	         result = data; 
+	      }
+	   });
+	    if(result=="anonymousUser"){
+	    	return false;
+	    }else{
+	    	return result;
+	    }
+	}
+
+
+ 	 
+ 	loadTable();  */
+ </script>
+
+</th:block>
+</html>

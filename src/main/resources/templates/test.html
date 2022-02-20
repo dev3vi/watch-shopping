@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style> 
+.sharecs-mobile-net-bar{ 
+display:none  
+} 
+.sharecs-pc-net-bar{ 
+right: 25px; /** icon hiển thị bên trái - Muốn chuyển sang bên phải sửa right =>left**/
+padding: 0px !important;
+bottom: 30px; 
+position: fixed; 
+z-index: 998;
+margin-bottom:0px !important; /** Nếu icon sát đáy quá tăng 0px lên ví dụ 5px **/ 
+} 
+.sharecs-pc-net-bar li{
+ width: 44px;
+ height: 46px; 
+overflow: hidden; 
+ margin-bottom: 0;
+ list-style: none;
+ }
+ .sharecs-pc-net-bar li.facebook{
+ margin-bottom: 8px;
+ background: url(https://sharecs.net/wp-content/uploads/2021/05/code-messger-cho-website-sharecs.net-fb.png);
+ background-repeat: no-repeat; 
+} 
+.sharecs-pc-net-bar li.zalo{ 
+background: url(https://sharecs.net/wp-content/uploads/2021/05/Code-Chen-Hotline-–-Zalo-–-Facebook-Vao-Website-sharecs.net-zl.png); 
+background-repeat: no-repeat; 
+} 
+.sharecs-pc-net-bar li a{
+ display: block; 
+width: 44px; 
+height: 44px;
+ } 
+@media only screen and (max-width: 499px) { 
+.sharecs-pc-net-bar{ 
+display:none 
+}
+ .sharecs-mobile-net-bar{
+ right: 10px; /** icon hiển thị bên trái - Muốn chuyển sang bên phải sửa right => left**/
+bottom: 10px; 
+position: fixed; 
+z-index: 998;
+ margin-bottom:0px !important; /** Nếu icon sát đáy quá tăng 0px lên ví dụ 5px **/ 
+display:block !Important
+ } 
+.sharecs-mobile-net-bar li{
+ width: 44px;
+ height: 46px; 
+overflow: hidden; 
+ margin-bottom: 0;
+ list-style:none
+ }
+.sharecs-mobile-net-bar li.facebook{ 
+margin-bottom: 8px;
+background: url(https://sharecs.net/wp-content/uploads/2021/05/code-messger-cho-website-sharecs.net-fb.png); 
+background-repeat: no-repeat;
+}
+ .sharecs-mobile-net-bar li.zalo{ 
+background: url(https://sharecs.net/wp-content/uploads/2021/05/Code-Chen-Hotline-–-Zalo-–-Facebook-Vao-Website-sharecs.net-zl.png);    
+background-repeat: no-repeat; 
+} 
+.sharecs-mobile-net-bar li a{ 
+display: block; 
+width: 44px; 
+height: 44px;
+}
+.sharecs-mobile-net-bar li.hotline { 
+background: url(https://sharecs.net/wp-content/uploads/2021/05/Code-Chen-Hotline-vao-website-sharecs.net_.gif); 
+background-repeat: no-repeat; 
+background-size: 44px; 
+} 
+} 
+</style>
+<body>
+<ul class="sharecs-pc-net-bar">
+ <li class="hotline">
+ <a href="tel:097000000" target="_blank" rel="nofollow"/>
+ </li>
+ <li class="facebook">
+ <a href="https://www.facebook.com/Sharecs.net/inbox" target="_blank" rel="nofollow"/>
+ </li>
+ <li class="zalo">
+ <a href="https://zalo.me/005869530" target="_blank" rel="nofollow"/>
+ </li>
+</ul>
+<!-- Hiển thị icon trên điện thoại -->
+<ul class="sharecs-mobile-net-bar">
+ <li class="facebook">
+ <a href="https://www.facebook.com/Sharecs.net/inbox" target="_blank" rel="nofollow"/>
+ </li>
+ <li class="zalo">
+ <a href="https://zalo.me/09830000" target="_blank" rel="nofollow"/>
+ </li>
+ <li class="hotline">
+ <a href="tel:097000000" target="_blank" rel="nofollow"/>
+ </li>
+ </ul>
+</body>
+
+
+<script>
+  $(document).ready(function(){
+    $('.user-support').click(function(event) {
+      $('.social-button-content').slideToggle();
+    });
+    });
+</script>
+    
+</body>
+</html>

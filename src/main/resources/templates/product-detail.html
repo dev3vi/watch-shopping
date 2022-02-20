@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main-layout :: main-fragment(  
+                                                ~{:: #custom-style},
+                                                ~{:: #main-content},
+                                                ~{:: #custom-script},
+                                               )}">
+<head>
+<th:block id="custom-style">
+<style>
+body {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  vertical-align: middle;
+}
+
+/* Position the image container (needed to position the left and right arrows) */
+.listImg {
+  position: relative;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+}
+
+/* Add a pointer when hovering over the thumbnail images */
+.cursor {
+  cursor: pointer;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 40%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+  
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color:  #d9d9d9;
+  text-decoration: none;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* Container for image text */
+.caption-container {
+  text-align: center;
+  padding: 2px 16px;
+  color: white;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Six columns side by side */
+.column {
+  float: left;
+  width: 16.66%;
+}
+
+/* Add a transparency effect for thumnbail images */
+.demo {
+  opacity: 0.6;
+}
+
+.active, 
+.demo:hover {
+  opacity: 1;
+}
+.info-prod{
+  margin-left: 50px;
+  width: 670px;
+  display: inline-block;
+
+} 
+.parameter{
+  margin-left: 30px;
+  float:right;
+  width:290px
+}
+#prod-id{
+	color: blue;
+}
+#prod-band{
+	color: blue;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+</style>
+</th:block>
+</head>                                         
+<body>
+
+<div id="main-content"  style="margin-top:10px">	
+
+<div class="containers" style="width:1160px;margin: 0 200px">
+<p>Sản Phẩm > Đồng hồ <span id="nameProd"></span></p>
+	<div class="listImg" style="width:402px;height:550px;float:left" >
+		<div id="big_img" class="border">
+  		</div>
+		  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+		  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+		
+		 <div class="caption-container">
+		    <p id="caption"></p>
+		 </div>
+		 <div id="small_img">
+		 </div>
+	</div>
+ 	<div class="info-prod" >
+ 	<div class="content" style = "width:350px;float:left;">
+ 	
+		<h4>Đồng hồ <span id="nameProds"></span></h4>
+		<p></p>
+		<div><p>Mã hàng <span id="prod-id">32 </span> | Thương hiệu: <span id="prod-band">Casio</span></p></div>
+		<p></p>
+		<div> Tình trạng : <span style="color:blue"> Còn Hàng</span></div>
+		<p></p>
+		<div> Bảo hành : <span style="color:blue"> 12 Tháng</span></div>
+		<p></p>
+		<div class="border" style="margin-top:30px">
+			<ul style="margin: 10px 0">
+			  <li style="color:blue"><a href="#">Chính sách chương trình Tekmark Online</a></li>
+			  <li style="color:blue"><a href="#">Miễn phí giao hàng với đơn hàng từ 500k</a></li>
+			</ul>
+		</div>
+		<p></p>
+		<div> Giá : <span style="color:red; font-size:30px;"  id="price"></span></div>
+		<p></p>
+		<button type="button" class="btn btn-danger btn-lg btn-block">Mua hàng</button>
+		<p></p>
+		<div><h3> Thông tin sản phẩm : </h3><span id="description"></span></div>
+	</div>
+	<div class="parameter">
+		<table>
+		    <thead>
+		        <tr>
+		            <th colspan="2">Thông tin chi tiết</th>
+		        </tr>
+		    </thead>
+		  <tr>
+		    <td>Thương hiệu </td>
+		    <td id="brand">Maria </td>
+		  </tr>
+		  <tr>
+		    <td>Chất liệu dây</td>
+		    <td id="cld">Francisco </td>
+
+		  </tr>
+		  <tr>
+		    <td>Chất Liệu Mặt </td>
+		    <td id="clm">Roland </td>
+
+		  </tr>
+		  <tr>
+		    <td>Giới tính </td>
+		    <td id="gender">Helen </td>
+
+		  </tr>
+		  <tr>
+		    <td>Độ Chịu Nước </td>
+		    <td id="dcn">Canada</td>
+		  </tr>
+		  <tr>
+		    <td>Kiểu Đồng Hồ </td>
+		    <td id="style-watch">Italy</td>
+		  </tr>
+		</table>
+	</div>
+	</div> 
+	
+<div class="clear"></div>
+
+</div>
+</div>
+</body>
+<th:block id="custom-script">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+ <script type="text/javascript" th:inline="javascript">
+ var ss =  /*[[${productId}]]*/ [];
+ var key = 'cart';
+ var value = localStorage.getItem(key);	
+ var count;
+ if(value){
+ 	listItem = value.split(",");   	
+ }else{
+ 	listItem = [];
+ }
+ 	function loadData(){
+ 		let table = '';
+ 		let table2 = ''; 
+ 		let i=1;
+ 		ss.img.forEach(element => {
+ 	 		 let html=`
+ 	 			<div class="mySlides" style="width:402px;display: inline-block;">
+ 	 		    	<img src="${element.dataImg}" style="width:400px;height:400px">
+ 	 			</div>
+ 	 		 `
+ 	 		 let html2=`
+ 			    <div class="column"  style="width:84px;height:84px">
+ 			      <img class="demo cursor" src="${element.dataImg}" style="width:84px;height:84px" onclick="currentSlide(${i})">
+ 			    </div>
+ 	 		 `
+ 	 		 i++;
+ 	 		 table+=html;
+ 	 		 table2+=html2;
+ 	 		 
+ 		})
+ 		
+ 		$('#big_img').html(table);
+ 		$('#small_img').html(table2);
+ 		
+ 		document.getElementById("nameProd").innerHTML = ss.name;
+ 		document.getElementById("nameProds").innerHTML = ss.name;
+ 		document.getElementById("prod-id").innerHTML = ss.id;
+ 		document.getElementById("prod-band").innerHTML = ss.brands;
+ 		
+ 		document.getElementById("cld").innerHTML = ss.clday;
+ 		document.getElementById("clm").innerHTML = ss.clmat;
+ 		document.getElementById("dcn").innerHTML = ss.doChiuNuoc;
+ 		document.getElementById("gender").innerHTML = ss.gender;
+ 		document.getElementById("brand").innerHTML = ss.brands;
+ 		document.getElementById("style-watch").innerHTML = ss.productType;
+ 		document.getElementById("description").innerHTML = ss.description;
+ 		document.getElementById("price").innerHTML = ss.price.toLocaleString('vi', {style : 'currency', currency : 'VND'});
+ 		loadCart();
+ 	}
+ 	loadData();
+ var slideIndex = 1;
+ showSlides(slideIndex);
+
+ function plusSlides(n) {
+   showSlides(slideIndex += n);
+ }
+
+ function currentSlide(n) {
+   showSlides(slideIndex = n);
+ }
+
+ function showSlides(n) {
+   var i;
+   var slides = document.getElementsByClassName("mySlides");
+   var dots = document.getElementsByClassName("demo");
+   var captionText = document.getElementById("caption");
+   if (n > slides.length) {slideIndex = 1}
+   if (n < 1) {slideIndex = slides.length}
+   for (i = 0; i < slides.length; i++) {
+       slides[i].style.display = "none";
+   }
+   for (i = 0; i < dots.length; i++) {
+       dots[i].className = dots[i].className.replace(" active", "");
+   }
+   slides[slideIndex-1].style.display = "block";
+   dots[slideIndex-1].className += " active";
+   captionText.innerHTML = dots[slideIndex-1].alt;
+ }
+ 
+ 
+
+ 
+ 
+ console.log(username);
+ function loadCart(){
+	 var username = checkUsers();
+     if(username==0){
+         count = listItem.length; 
+         document.getElementById("count").innerHTML = "("+ count + ")";
+     }else{
+ 	  	$.get("/get-user-info", data => {
+ 			$.get("/cart/get-item-by-username?username="+data).done(res=>{
+ 				count = res.length;
+ 				document.getElementById("count").innerHTML = "("+ count + ")";
+ 			});
+ 			});
+     }
+ }
+	function checkUsers(){
+	    var result="";
+	    $.ajax({
+	      url:"/get-user-info",
+	      async: false,  
+	      success:function(data) {
+	         result = data; 
+	      }
+	   });
+	    if(result=="anonymousUser"){
+	    	return 0;
+	    }else{
+	    	return result;
+	    }
+	} 
+ </script>
+
+</th:block>
+</html>

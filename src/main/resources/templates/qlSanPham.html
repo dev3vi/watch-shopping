@@ -1,0 +1,326 @@
+
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin-layout :: main-fragment(  ~{::title},
+                                                ~{:: #custom-style},
+                                                ~{:: #main-content},
+                                                ~{:: #custom-scripts},
+                                               )}">
+    <head>
+    <title>Product</title>
+		<th:block id="custom-style">
+		</th:block>
+    </head>
+<body class="sb-nav-fixed">     
+<main>             
+<div id="main-content"  style="margin-top:10px">	
+
+
+	<div class="container-fluid px-4">
+                        <h1 class="mt-4">Tables</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Tables</li>
+                        </ol>
+                        <!-- Button trigger modal -->
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal" style="margin:10px">
+							Thêm Sản Phẩm
+						</button>
+
+		<!-- Modal Create Product-->
+		<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLongTitle">Thêm Sản Phẩm</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		          <form  action="/" method="POST" id="form-updata-info">
+		            <div class="row">
+		              <div class="mb-3 col" >
+		                <label for="exampleInputPassword1" class="form-label">Tên sản phẩm</label>
+		                <input type="text" id="name" class="form-control" name="name" placeholder="Casio fx">
+		              </div>                
+		              <div class="mb-3 col">
+		                <label for="exampleInputDif" class="form-label">Avatar</label>
+		                <input type="file" id="image" class="form-control-file" name="image">
+		              </div>
+		
+		          </div> 
+		          <div class="row">
+		              <div class="mb-3 col">
+		                <label for="exampleInputPassword1" class="form-label">Giá</label>
+		                <input type="text" id="price" class="form-control" placeholder="price" name="price">
+		              </div>
+		              <div class="mb-3 col">
+		                <label for="exampleInputPassword1" class="form-label">Số Lượng</label>
+		                <input type="text" id="quantity" class="form-control" placeholder="12" name="quantity">
+		              </div>
+		            </div>
+
+		             <div class="row">
+		              <div class="mb-3 col">
+		                <label for="exampleInputDif" class="form-label">Chất liệu mặt id</label>
+		                <input type="text" id="cLMat" class="form-control" placeholder="1,2,3..." name="cLMat">
+		              </div>
+		            <div class="mb-3 col">
+		                <label for="exampleInputDif" class="form-label">Brand id</label>
+		                <input type="text" id="brands" class="form-control" placeholder="1,2,3..." name="brands">
+		              </div>
+		             </div> 
+		          <div class="row">
+		              <div class="mb-3 col">
+		                <label for="exampleInputDif" class="form-label">Product Type</label>
+		                <input type="text" id="productType" class="form-control" placeholder="Đồng hồ cơ" name="productType">
+		              </div>
+		            <div class="mb-3 col">
+		                <label for="exampleInputDif" class="form-label">Chất liệu dây id</label>
+		                <input type="text" id="cLDay" class="form-control" placeholder="1,2,3..." name="cLDay">
+		              </div>
+		             </div> 
+		           <div class="row">
+		              <div class="mb-3 col">
+		                <label for="exampleInputDif" class="form-label">Giới tính</label>
+		                <input type="text" id="gender" class="form-control" placeholder="Nam" name="gender">
+		              </div>
+		            <div class="mb-3 col">
+		                <label for="exampleInputDif" class="form-label">Độ chịu Nước</label>
+		                <input type="text" id="doChiuNuoc" class="form-control" placeholder="1,2,3..." name="doChiuNuoc">
+		              </div>
+		             </div> 
+		         <div class="row">
+		            <div class="mb-3 col">
+		                <label for="exampleInputDif" class="form-label">Description</label>
+		                <input type="text" id="description" class="form-control" placeholder="null" name="description">
+		              </div>
+		             </div> 
+		          </form>
+		        </div>
+		     		<div class="modal-footer">
+		        		<button type="button" class="btn btn-primary" id="btnCreate" data-dismiss="modal">Save changes</button>
+		      		</div>
+		      </div>
+		
+		    </div>
+		  </div>
+
+			
+			<!-- Modal Update Product-->
+			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLongTitle">Sửa Sản Phẩm</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			          <form  action="/" method="POST" id="form-update">
+			            <div class="row">
+			              <div class="mb-3 col" >
+			                <label for="exampleInputPassword1" class="form-label">Tên sản phẩm</label>
+			                <input type="text" id="names" class="form-control" name="name" placeholder="Casio fx">
+			              </div>                
+			              <div class="mb-3 col">
+			                <label for="exampleInputDif" class="form-label">Avatar</label>
+			                <input type="file" id="images" class="form-control-file" name="image">
+			              </div>
+			
+			          </div>
+			          <div class="row">
+			              <div class="mb-3 col">
+			                <label for="exampleInputPassword1" class="form-label">Giá</label>
+			                <input type="text" id="prices" class="form-control prices" placeholder="price" name="price">
+			              </div>
+			              <div class="mb-3 col">
+			                <label for="exampleInputPassword1" class="form-label">Số Lượng</label>
+			                <input type="text" id="quantitys" class="form-control" placeholder="12" name="quantity">
+			              </div>
+			            </div>
+
+			             <div class="row">
+			              <div class="mb-3 col">
+			                <label for="exampleInputDif" class="form-label">Chất liệu mặt id</label>
+			                <input type="text" id="cLMats" class="form-control" placeholder="1,2,3..." name="cLMat">
+			              </div>
+			            <div class="mb-3 col">
+			                <label for="exampleInputDif" class="form-label">Brand id</label>
+			                <input type="text" id="brandss" class="form-control" placeholder="1,2,3..." name="brands">
+			              </div>
+			             </div> 
+			           <div class="row">
+			              <div class="mb-3 col">
+			                <label for="exampleInputDif" class="form-label">Product Type</label>
+			                <input type="text" id="productTypes" class="form-control" placeholder="Đồng hồ cơ" name="productType">
+			              </div>
+
+			              <div class="mb-3 col">
+			                <label for="exampleInputDif" class="form-label">Chất liệu dây id</label>
+			                <input type="text" id="cLDays" class="form-control" placeholder="1,2,3..." name="cLDay">
+			              </div>			    
+			             </div> 
+			            <div class="row">
+			              <div class="mb-3 col">
+			                <label for="exampleInputDif" class="form-label">Giới tính</label>
+			                <input type="text" id="genders" class="form-control" placeholder="Nam" name="gender">
+			              </div>
+			            <div class="mb-3 col">
+			                <label for="exampleInputDif" class="form-label">Độ chịu Nước</label>
+			                <input type="text" id="doChiuNuocs" class="form-control" placeholder="1,2,3..." name="doChiuNuoc">
+			              </div>
+			             </div> 
+			            <div class="row">
+			            <div class="mb-3 col">
+			                <label for="exampleInputDif" class="form-label">Description</label>
+			                <input type="text" id="descriptions" class="form-control" placeholder="null" name="description">
+			              </div>
+			             </div> 
+			          </form>
+			        </div>
+			     		<div class="modal-footer">
+			        		<button type="button" class="btn btn-primary" id="btnUpdate" data-dismiss="modal">Save changes</button>
+			      		</div>
+			      </div>
+			
+			    </div>
+			  </div>
+			        <div class="card mb-4">
+			              <div class="card-header" >
+			                    <i class="fas fa-table me-1"></i>
+			                      Danh sách sản phẩm
+			                     <span id="sum"></span>
+			              </div>
+			              
+			              <div class="card-body">
+			               <table class="table">
+			                <thead style="border:1px solid LightGray;">
+			                  <tr>
+			                    <th scope="col">ID</th>
+			                    <th scope="col">Tên Sản Phẩm</th>
+			                    <th scope="col">Giá</th>
+			                    <th scope="col">Số Lượng</th>
+			                    <th scope="col">Khác</th>
+			                    <th scope="col">Action</th>
+			                  </tr>
+			                </thead>
+			                <tbody id="load-table" style="border:1px solid LightGray;">   
+			               </table>
+			              </div>
+			       </div>
+			 </div>         
+</div>
+</main>
+
+</body>
+    <th:block id="custom-scripts">
+	    <script>
+	    function loadData() {
+	      $.get("/product/all-product-detail").done(res=>{
+	        let table='';
+	        res.forEach(element => {
+	          let html=`<tr>
+	                <th scope="row">${element.id}</th>
+	                <td>${element.name}</td>
+	                <td>${element.price} VNĐ</td>
+	                <td>${element.quantity}</td>
+	                <td>${element.productType}</td>
+	                <td>
+	                <button onclick="bindingInfo(this)"  type="button" class="btn btn-warning" product-id="${element.id}" data-target= "#updateModal" data-toggle="modal">Sửa</button>
+	                <button onclick="deleteProduct(this)" id="btnDelete" type="button" class="btn btn-danger" product-id="${element.id}" disabled>Xóa</button>
+	                </td>
+	              </tr>`
+	              table+=html;
+	        });
+	        $('#load-table').html(table);
+	    });
+	  	$.get("/get-user-info", data => {
+			document.getElementById("navbarDropdown").innerHTML = data;
+			});
+	  	$.get("product/get-quantity", sum => {
+			document.getElementById("sum").innerHTML ='('+sum+')' ;
+			});
+		}
+	    
+	    $(function(){
+	        loadData();
+	      });
+	
+	
+	    function deleteProduct(element){
+	      let id= $(element).attr("product-id");
+	      $.ajax({
+	          method:'delete',
+	          url:'/product/delete-product?id='+id,
+	          contentType:'application/json',
+	          data: "",
+	          success: res => {
+	            alert("Xóa thành công!");
+	            loadData();
+	          }
+	        });
+	    }
+	
+		    
+	
+		    
+		  $('#btnCreate').click((event)=>{
+		      event.preventDefault();
+		      let form = document.getElementById("form-updata-info");
+		      let data = new FormData(form);
+		 	    $.ajax({
+		 		      type:'post',
+		 		      url:`/product/create-product`,
+		 		      data:data,
+		 		      cache: false,
+		 		      contentType: false,
+		 		      processData: false,
+		 		      success: res => {
+		 		        loadData();
+		 		      }
+		 		    }); 
+		   })
+		   
+		    function bindingInfo(element){
+		    	 let id = $(element).attr("product-id");
+		    	 document.getElementById("names").setAttribute("id-prod", id);
+		    	 $.get("/product/get-productdto-by-id?id="+id).done(res =>{
+				      $('#names').val(res.name);
+				      $('#prices').val(res.price);
+				      $('#quantitys').val(res.quantity);
+				      $('#cLDays').val(res.clday);
+				      $('#cLMats').val(res.clmat);
+				      $('#brandss').val(res.brands);
+				      $('#productTypes').val(res.productType);
+				      $('#descriptions').val(res.description);
+				      $('#genders').val(res.gender);
+				      $('#doChiuNuocs').val(res.doChiuNuoc);	  
+				  });
+		      };
+		      
+		   	 $('#btnUpdate').click((event)=>{
+		      event.preventDefault();   
+		      let id = document.getElementById("names").getAttribute("id-prod");
+		      let form = document.getElementById("form-update");
+		      let data = new FormData(form);	  
+		      console.log(id);
+		 	    $.ajax({
+		 		      type:'post',
+		 		      url:`/product/update-product?id=`+id,
+		 		      data:data,
+		 		      cache: false,
+		 		      contentType: false,
+		 		      processData: false,
+		 		      success: res => {
+		 		    	 console.log(id);
+		 		        loadData();
+		 		      }
+		 		    });  
+		   });
+		    
+	  </script>
+	</th:block>
+  
+</html>

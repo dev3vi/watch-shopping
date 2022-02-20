@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin-layout :: main-fragment(  ~{::title},
+                                                ~{:: #custom-style},
+                                                ~{:: #main-content},
+                                                ~{:: #custom-scripts},
+                                               )}">
+    <head>
+    <title>Image</title>
+		<th:block id="custom-style">
+		</th:block>
+    </head>
+<body class="sb-nav-fixed">
+
+
+<div id="main-content"  style="margin-top:10px">	
+ <div class="container-fluid px-4">
+                        <h1 class="mt-4">Tables</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Image</li>
+                        </ol>
+
+
+
+
+<!-- Modal Create Img-->
+<div class="modal fade" id="updateImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Sửa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form  action="/" method="POST" id="update-image">
+
+              <div class="mb-3 col" >
+                <label for="exampleInputPassword1" class="form-label" id="name-product"></label>
+                <input type="hidden" id="names" class="form-control" name="names" placeholder="Rolex" >
+              </div>                
+              <div class="mb-3 col">
+                <label for="exampleInputPassword1" class="form-label">Ảnh</label>
+                <input type="file" id="image" class="form-control" name="image">
+              </div>
+
+          </form>
+        </div>
+     		<div class="modal-footer">
+        		<button type="button" class="btn btn-primary" id="btnUpdate" data-dismiss="modal">Save changes</button>
+      		</div>
+      </div>
+
+    </div>
+  </div>
+
+        <div class="card mb-4">
+              <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                      Quản lý hình ảnh
+               </div>
+               <div class="card-body">
+              <table class="table">
+                <thead style="border:1px solid LightGray;">
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Tên Sản Phẩm</th>
+                    <th scope="col">Hình ảnh</th>
+                    <th scope="col">Người thêm</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="load-table" style="border:1px solid LightGray;">   
+                 </tbody>
+              </table>
+	    	 </div>
+	 	</div>
+	 </div>       
+</div> 
+       
+    </body>
+<th:block id="custom-scripts">
+  <script>
+    function loadData() {
+      $.post("/img/get-img").done(res=>{ 
+    	  let table='';	  
+    	  let id=1;
+         res.forEach(element => {
+       	  console.log(element);
+        	 let table2='';     	 
+        	 element.image.forEach(img=>{
+        		 let html2 = `<span><img src="${img}" style="width:30px"></img></span>`
+        		 table2+=html2;
+        	 });
+            let html=`<tr>        	
+                <th scope="row">${id}</th>
+                <td>${element.name}</td>
+                <td>${table2}</td>
+                <td></td>
+                <td><button onclick="bindingInfo(this)"  type="button" class="btn btn-warning" img-id="${element.name}" data-target= "#updateImg" data-toggle="modal">Update</button>
+                <button onclick="deleteProduct(${element.id})"  id="btnDelete" type="button" class="btn btn-danger">Clear</button></td>
+                </td> 
+                </tr>`
+              table+=html;             
+              id++;
+              $('#load-table').html(table);
+        }); 
+       
+    });
+
+    }   
+
+    function deleteProduct(element){
+    	$.post("/img/clear-img-with-id?id="+element, data => {
+    		loadData();
+    	})
+        }
+    
+    $(function(){
+        loadData();
+      });
+
+
+	  $('#btnUpdate').click((event)=>{
+	      event.preventDefault();
+	      let form = document.getElementById("update-image");
+	      let data = new FormData(form);
+	 	    $.ajax({
+	 		      type:'post',
+	 		      url:`/img/create-img`,
+	 		      data:data,
+	 		      cache: false,
+	 		      contentType: false,
+	 		      processData: false,
+	 		      success: res => {
+	 		    	  console.log(res);
+	 		    	 console.log(data);
+	 		        loadData();
+	 		      }
+	 		    }); 
+	   })
+
+	    function bindingInfo(element){
+	    	 let img = $(element).attr("img-id");
+	    	 $('#names').val(img);
+	    	 document.getElementById("name-product").innerHTML = img;
+	    	 $().val(img);
+	    	 
+	      }; 
+  
+  </script>
+</th:block>
+    
+
+</html>
