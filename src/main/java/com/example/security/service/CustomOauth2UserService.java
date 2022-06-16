@@ -38,15 +38,12 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService{
 	}
 	
 	private OAuth2User processAuthenticateUser(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
-		System.out.println(oAuth2UserRequest.getClientRegistration().getRegistrationId()+"ok");
 		OAuth2UserInfo oAuth2UserInfo = new OAuth2UserInfo();
-		System.out.println(oAuth2User.getAttributes().get("name"));
 		oAuth2UserInfo.setId(oAuth2User.getAttribute("sub"));
 		oAuth2UserInfo.setName(oAuth2User.getAttribute("name"));
 		oAuth2UserInfo.setEmail(oAuth2User.getAttribute("email"));
 		oAuth2UserInfo.setImageUrl(oAuth2User.getAttribute("picture"));
 		oAuth2UserInfo.setType(oAuth2UserRequest.getClientRegistration().getRegistrationId());
-		System.out.println(oAuth2UserInfo);
 		if(!StringUtils.hasText(oAuth2UserInfo.getEmail())) {
 			throw new OAuth2AuthenticationException("Email not found from OAuth2 provider");
 		}
