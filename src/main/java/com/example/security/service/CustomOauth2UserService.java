@@ -2,6 +2,7 @@ package com.example.security.service;
 
 import java.util.Optional;
 
+import com.example.security.user.CustomUserDetail;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -56,8 +57,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService{
 		}else {
 			user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
 		}
-//		return CustomUserDetail.createCustomUser(user, oAuth2User.getAttributes());
-		return null;
+		return CustomUserDetail.createCustomUser(user, oAuth2User.getAttributes());
 	}
 	
 	private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
