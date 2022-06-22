@@ -31,21 +31,19 @@ public class UserJwtController {
     private String authenticateUser(@RequestBody UserDTO userDTO) throws Exception {
         Authentication authentication = null;
         String jwt = null;
-        System.out.println(userDTO.getUsername()+"-"+userDTO.getPassword());
-//      Xác thực từ username và password.
-//        try {
-//            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-//                    userDTO.getUsername(),userDTO.getPassword());
-//            authentication = authenticationManager.authenticate(authenticationToken);
-//            // Nếu không xảy ra exception tức là thông tin hợp lệ
-//            // Set thông tin authentication vào Security Context
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//            jwt = tokenProvider.createToken(userDTO.getUsername());
-//        } catch (Exception exception) {
-//            log.error("authentication fail", exception);
-//            throw new ServerException("ErrorCode.AUTHEN_ERROR");
-//        }
+        //Xác thực từ username và password.
+        try {
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    userDTO.getUsername(),userDTO.getPassword());
+            authentication = authenticationManager.authenticate(authenticationToken);
+            // Nếu không xảy ra exception tức là thông tin hợp lệ
+            // Set thông tin authentication vào Security Context
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            jwt = tokenProvider.createToken(userDTO.getUsername());
+        } catch (Exception exception) {
+            log.error("authentication fail", exception);
+            throw new ServerException("ErrorCode.AUTHEN_ERROR");
+        }
         return jwt;
     }
 }
