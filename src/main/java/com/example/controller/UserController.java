@@ -12,7 +12,7 @@ import com.example.service.UserService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/apis")
+@RequestMapping("/api")
 @AllArgsConstructor 
 public class UserController {
 

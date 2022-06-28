@@ -27,10 +27,7 @@ public class UserDetailServiceImpl implements UserDetailsService{
 
 		//load user by username
 		User user = this.userRepository.findById(username).orElseThrow(()-> new UsernameNotFoundException("Username chua duoc dang ky"));
-		
-//		return CustomUserDetail.createCustomUser(user);
-		
-		
+
 		//load role list
 		List<GrantedAuthority> roleList = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getRoleCode().toString()));
 		

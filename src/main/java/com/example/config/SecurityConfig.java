@@ -7,10 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -44,7 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailService).passwordEncoder(new BCryptPasswordEncoder());
     }
-
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers(HttpMethod.GET, "/**");
+    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -54,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/**", "/register","/api").permitAll();
+                .antMatchers("/login","/**", "/register","/api").permitAll();
 //			.and()
 //			.formLogin()
 //			.loginPage("/login")
@@ -78,7 +83,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .userService(customOauth2UserService);
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-
     }
 }

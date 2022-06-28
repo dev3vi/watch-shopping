@@ -34,7 +34,6 @@ public class ApiController {
 	
 	@GetMapping("/get-cld")
 	public Optional<ChatLieuDay> getCld(@RequestParam(value = "id", required = false) Long id ) {
-		System.out.println(id);
 		System.out.println(this.chatLieuDayRepository.findById(id));
 		return this.chatLieuDayRepository.findById(id);
 	}
