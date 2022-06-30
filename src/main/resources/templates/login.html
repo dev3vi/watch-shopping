@@ -166,7 +166,9 @@
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: res => {
-                if (res!=null){
+
+                if (res!=""){
+                    localStorage.setItem('jwtToken',res);
                     window.location.replace("http://localhost:8080/");
                 }
             }

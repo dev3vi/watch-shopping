@@ -234,23 +234,7 @@
 	 }
 	 
 	async function loadTable(){
-		await $.get("/get-user-info", data => {
-			let htmls =`
-				<div class="dropdown" style="margin-right:20px">
-				<i class="fa fa-user-circle-o"  style="color:#ffffff"></i>
-				  <button class="btn dropdown-toggle shadow-none" type="button" id="dropdownMenuButton" data-toggle="dropdown"  
-				  			style="padding: 0px;margin-top:-5px;color:#ffffff; ">	
-				  			<p id=""></p>
-				  </button>
-				  <div class="dropdown-menu dropdown-menu-right">
-				    <a class="dropdown-item" href="#">Another action</a>
-				    <a class="dropdown-item" href="#">Another action</a>
-				    <a class="dropdown-item" href="/logout">Đăng Xuất</a>		    
-				  </div>
-				</div>`	
-	 		$('.username').html(htmls);
-			document.getElementById("dropdownMenuButton").innerHTML = data;
-			});
+
 		
  			let html=[];
             let i=0;
@@ -272,24 +256,29 @@
  	 		x = parseInt(totalMoney).toLocaleString('vi', {style : 'currency', currency : 'VND'});
  	 		document.getElementById("sums").innerHTML =x;
  	}
-	
+
 	function checkUser(){
-	    var result="";
-	    $.ajax({
-	      url:"/get-user-info",
-	      async: false,  
-	      success:function(data) {
-	         result = data; 
-	      }
-	   });
-	    if(result=="anonymousUser"){
-	    	return null;
-	    }else{
-	    	return result;
-	    }
+		var result = "";
+		var jwtToken =  localStorage.getItem('jwtToken');
+		$.ajax({
+			url: "/api/get-user-info",
+			async: false,
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+				"Authorization": "Bearer " + jwtToken
+			},
+			success: function (data) {
+				result = data;
+			}
+		});
+		if (result == null) {
+			return null;
+		} else {
+			return result;
+		}
 	}
 
- 	loadTable(); 
+	loadTable();
  	
  </script>
 

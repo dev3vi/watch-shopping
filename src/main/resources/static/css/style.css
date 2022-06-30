@@ -6,6 +6,7 @@ body{
 }
 .top-header{
 	background: #ed3237;
+	height: 25px;
 }
 .login:hover{
 	text-decoration: none;
