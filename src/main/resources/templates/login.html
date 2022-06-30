@@ -166,18 +166,9 @@
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: res => {
-			// 	$.ajax({
-			// 		method: 'GET',
-			// 		url: 'http://localhost:8080/',
-			// 		headers: {
-			// 			'Authorization': "Bearer "+ res,
-			// 			'Content-Type':'application/json'
-			// },
-			// 		success: res => {
-			// 			console.log("ok")
-			// 		}
-			// 	});
-                window.location.href = "localhost:8080";
+                if (res!=null){
+                    window.location.replace("http://localhost:8080/");
+                }
             }
         });
 

@@ -25,7 +25,7 @@ public class TokenProvider {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 6 * 60 * 60 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + 72 * 60 * 60 * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 

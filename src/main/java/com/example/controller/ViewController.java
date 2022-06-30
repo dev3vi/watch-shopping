@@ -30,6 +30,11 @@ public class ViewController {
 	public String loginPage(Model model) {
 		return "login";
 	}
+
+	@GetMapping("/index")
+	public String indexPage(Model model) {
+		return "index";
+	}
 	
 	@GetMapping("/403")
 	public String forbiddenPage() {
@@ -43,7 +48,6 @@ public class ViewController {
 		System.out.println(products);
 		model.addAttribute("productId", products);
 		return "product-detail";
-
 	}
 	
 	@GetMapping("/register")
