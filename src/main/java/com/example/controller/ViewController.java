@@ -67,7 +67,7 @@ public class ViewController {
 		return "redirect:/login";
 
 	}
-	@GetMapping("/admin/products")
+	@GetMapping("/adminProducts")
 	public String adminPage() {
 		return "qlSanPham";
 	}
@@ -87,12 +87,12 @@ public class ViewController {
 		return "product-detail";
 	}
 	
-	@GetMapping("/admin/brands")
+	@GetMapping("/adminBrands")
 	public String brand() {
 		return "qlBrand";
 	}
 	
-	@GetMapping("/admin/img")
+	@GetMapping("/adminImg")
 	public String img() {
 		return "qlPicture";
 	}
