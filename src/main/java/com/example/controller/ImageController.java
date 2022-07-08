@@ -20,7 +20,7 @@ import com.example.service.ProductService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/img")
+@RequestMapping("/api")
 @AllArgsConstructor
 public class ImageController {
 	

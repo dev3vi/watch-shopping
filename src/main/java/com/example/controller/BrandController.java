@@ -19,7 +19,7 @@ import com.example.service.BrandService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/brand")
+@RequestMapping("/api")
 @AllArgsConstructor
 public class BrandController {
 	

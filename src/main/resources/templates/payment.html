@@ -222,7 +222,7 @@
  		console.log(data);
  		$.ajax({
 			method:'POST',
-			url:'/cart/get-oder-info',
+			url:'/api/get-oder-info',
 			contentType:'application/json',
 			data: JSON.stringify(data),
 			success: res => {	
@@ -240,7 +240,7 @@
             let i=0;
             let username = checkUser(); 
              	itemQuantity.forEach(element=>{          		
-      	 	 	 	$.get( "/product/get-productdto-by-id?id="+element.id, function(datas) {
+      	 	 	 	$.get( "/api/get-productdto-by-id?id="+element.id, function(datas) {
      	 	 	 		html[i] = `
      	 	 	 		    <tr>
      	 	 	 		      <th scope="row"><img src="${datas.image}" style="width: 70px;">${datas.name}</th>

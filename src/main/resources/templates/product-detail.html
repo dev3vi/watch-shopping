@@ -319,7 +319,7 @@ tr:nth-child(even) {
          document.getElementById("count").innerHTML = "("+ count + ")";
      }else{
  	  	$.get("/get-user-info", data => {
- 			$.get("/cart/get-item-by-username?username="+data).done(res=>{
+ 			$.get("/api/get-item-by-username?username="+data).done(res=>{
  				count = res.length;
  				document.getElementById("count").innerHTML = "("+ count + ")";
  			});

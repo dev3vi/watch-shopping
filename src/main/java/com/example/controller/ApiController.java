@@ -37,15 +37,5 @@ public class ApiController {
 		System.out.println(this.chatLieuDayRepository.findById(id));
 		return this.chatLieuDayRepository.findById(id);
 	}
-	
-	@GetMapping("/get-item-by-username")
-	public List<Products> getItem(@RequestParam(value = "username", required = false) String username) {
-		return itemCartService.getItem(username);
-		
-	}
-	
-	@PostMapping("/add-item-username")
-	public void addItemUsername(@RequestBody ItemRequest itemRequest) {
-		itemCartService.linkItemAndUser(itemRequest);
-	}
+
 }

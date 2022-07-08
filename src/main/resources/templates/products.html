@@ -225,7 +225,7 @@
 			document.getElementById("dropdownMenuButton").innerHTML = data;
 			});
 
-              $.get("/product/all-product-detail").done(res=>{
+              $.get("/api/all-product-detail").done(res=>{
             	  console.log(res);
                   let html=[];
                   let i=0;
@@ -324,7 +324,7 @@
             document.getElementById("count").innerHTML = "("+ count + ")";
         }else{
     	  	$.get("/get-user-info", data => {
-    			$.get("/cart/get-item-by-username?username="+data).done(res=>{
+    			$.get("/api/get-item-by-username?username="+data).done(res=>{
     				count = res.length;
     				document.getElementById("count").innerHTML = "("+ count + ")";
     			});
@@ -350,7 +350,7 @@
     		}
     		$.ajax({
     			method:'post',
-    			url:'/cart/add-item-username',
+    			url:'/api/add-item-username',
 				contentType:'application/json',
 				data: JSON.stringify(data),  			
     			success: res => {

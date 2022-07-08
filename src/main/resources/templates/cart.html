@@ -196,14 +196,11 @@
  	let k = 0;
 	let username = checkUser();
 	async function loadTable(){
-
-		
-		
  			let html=[];
             let i=0;
             let username = checkUser(); 
             if(username!=""){
-            	$.get("cart/get-item-by-username?username="+username, data => {
+            	$.get("api/get-item-by-username?username="+username, data => {
             		let cart = [];
             		let count = data.length;
             		data.forEach(element=>{	
@@ -231,7 +228,7 @@
             }else{
             	let count = listItem.length;
      			listItem.forEach(element=>{
-     	 	 	 	$.get( "/product/get-productdto-by-id?id="+element, function(datas) {
+     	 	 	 	$.get( "/api/get-productdto-by-id?id="+element, function(datas) {
      	 	 	 		html[i] = `
      	 	 	 		    <tr>
      	 	 	 		      <th scope="row"><img src="${datas.image}" style="width: 70px;">${datas.name}</th>
@@ -311,7 +308,7 @@
         		}
     		console.log(data);
  		    $.ajax({
- 			      url:"/cart/delete-item-by-username",
+ 			      url:"/api/delete-item-by-username",
  			      type: "delete",
 
  			     contentType:'application/json',

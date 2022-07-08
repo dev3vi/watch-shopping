@@ -84,7 +84,7 @@
 <th:block id="custom-scripts">
   <script>
     function loadData() {
-      $.post("/img/get-img").done(res=>{ 
+      $.post("/api/get-img").done(res=>{
     	  let table='';	  
     	  let id=1;
          res.forEach(element => {
@@ -113,7 +113,7 @@
     }   
 
     function deleteProduct(element){
-    	$.post("/img/clear-img-with-id?id="+element, data => {
+    	$.post("/api/clear-img-with-id?id="+element, data => {
     		loadData();
     	})
         }
@@ -129,7 +129,7 @@
 	      let data = new FormData(form);
 	 	    $.ajax({
 	 		      type:'post',
-	 		      url:`/img/create-img`,
+	 		      url:`/api/create-img`,
 	 		      data:data,
 	 		      cache: false,
 	 		      contentType: false,

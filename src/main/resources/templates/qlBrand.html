@@ -117,7 +117,7 @@
 <th:block id="custom-scripts">
   <script>
     function loadData() {
-      $.get("/brand/all-brand").done(res=>{
+      $.get("/api/all-brand").done(res=>{
         let table='';
         res.forEach(element => {
           let html=`<tr>
@@ -148,7 +148,7 @@
       let id= $(element).attr("brand-id");
       $.ajax({
           method:'delete',
-          url:'/brand/delete-brand?id='+id,
+          url:'/api/delete-brand?id='+id,
           contentType:'application/json',
           data: "",
           success: res => {
@@ -168,7 +168,7 @@
 	      }
 	 	    $.ajax({
 	 		      type:'post',
-	 		      url:'/brand/creates-brand',
+	 		      url:'/api/creates-brand',
 
 	 		      contentType: 'application/json',
 	 		      data : JSON.stringify(data),

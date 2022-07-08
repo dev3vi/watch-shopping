@@ -31,7 +31,7 @@ import com.example.service.ProductService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/api")
 @AllArgsConstructor
 public class ProductController {
 

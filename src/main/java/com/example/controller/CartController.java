@@ -19,7 +19,7 @@ import com.example.service.OderService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/api")
 @AllArgsConstructor
 public class CartController {
 	

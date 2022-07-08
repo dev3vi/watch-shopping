@@ -218,7 +218,7 @@
     <th:block id="custom-scripts">
 	    <script>
 	    function loadData() {
-	      $.get("/product/all-product-detail").done(res=>{
+	      $.get("/api/all-product-detail").done(res=>{
 	        let table='';
 	        res.forEach(element => {
 	          let html=`<tr>
@@ -239,7 +239,7 @@
 	  	$.get("/get-user-info", data => {
 			document.getElementById("navbarDropdown").innerHTML = data;
 			});
-	  	$.get("product/get-quantity", sum => {
+	  	$.get("api/get-quantity", sum => {
 			document.getElementById("sum").innerHTML ='('+sum+')' ;
 			});
 		}
@@ -253,7 +253,7 @@
 	      let id= $(element).attr("product-id");
 	      $.ajax({
 	          method:'delete',
-	          url:'/product/delete-product?id='+id,
+	          url:'/api/delete-product?id='+id,
 	          contentType:'application/json',
 	          data: "",
 	          success: res => {
@@ -272,7 +272,7 @@
 		      let data = new FormData(form);
 		 	    $.ajax({
 		 		      type:'post',
-		 		      url:`/product/create-product`,
+		 		      url:`/api/create-product`,
 		 		      data:data,
 		 		      cache: false,
 		 		      contentType: false,
@@ -286,7 +286,7 @@
 		    function bindingInfo(element){
 		    	 let id = $(element).attr("product-id");
 		    	 document.getElementById("names").setAttribute("id-prod", id);
-		    	 $.get("/product/get-productdto-by-id?id="+id).done(res =>{
+		    	 $.get("/api/get-productdto-by-id?id="+id).done(res =>{
 				      $('#names').val(res.name);
 				      $('#prices').val(res.price);
 				      $('#quantitys').val(res.quantity);
@@ -308,7 +308,7 @@
 		      console.log(id);
 		 	    $.ajax({
 		 		      type:'post',
-		 		      url:`/product/update-product?id=`+id,
+		 		      url:`/api/update-product?id=`+id,
 		 		      data:data,
 		 		      cache: false,
 		 		      contentType: false,
