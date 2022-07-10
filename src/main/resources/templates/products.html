@@ -207,23 +207,23 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 	<script type="text/javascript">
 	function loadData() {
-		$.get("/get-user-info", data => {
-			let htmls =`
-				<div class="dropdown" style="margin-right:20px">
-				<i class="fa fa-user-circle-o"  style="color:#ffffff"></i>
-				  <button class="btn dropdown-toggle shadow-none" type="button" id="dropdownMenuButton" data-toggle="dropdown"  
-				  			style="padding: 0px;margin-top:-5px;color:#ffffff; ">	
-				  			<p id=""></p>
-				  </button>
-				  <div class="dropdown-menu dropdown-menu-right">
-				    <a class="dropdown-item" href="#">Another action</a>
-				    <a class="dropdown-item" href="#">Another action</a>
-				    <a class="dropdown-item" href="/logout">Đăng Xuất</a>		    
-				  </div>
-				</div>`	
-	 		$('.username').html(htmls);
-			document.getElementById("dropdownMenuButton").innerHTML = data;
-			});
+		// $.get("/api/get-user-info", data => {
+		// 	let htmls =`
+		// 		<div class="dropdown" style="margin-right:20px">
+		// 		<i class="fa fa-user-circle-o"  style="color:#ffffff"></i>
+		// 		  <button class="btn dropdown-toggle shadow-none" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+		// 		  			style="padding: 0px;margin-top:-5px;color:#ffffff; ">
+		// 		  			<p id=""></p>
+		// 		  </button>
+		// 		  <div class="dropdown-menu dropdown-menu-right">
+		// 		    <a class="dropdown-item" href="#">Another action</a>
+		// 		    <a class="dropdown-item" href="#">Another action</a>
+		// 		    <a class="dropdown-item" href="/logout">Đăng Xuất</a>
+		// 		  </div>
+		// 		</div>`
+	 	// 	$('.username').html(htmls);
+		// 	document.getElementById("dropdownMenuButton").innerHTML = data;
+		// 	});
 
               $.get("/api/all-product-detail").done(res=>{
             	  console.log(res);
@@ -319,16 +319,32 @@
     }
     var username = checkUsers();
     function loadCart(){
-        if(username==0){
+        if(username==""){
             count = listItem.length; 
             document.getElementById("count").innerHTML = "("+ count + ")";
         }else{
-    	  	$.get("/get-user-info", data => {
-    			$.get("/api/get-item-by-username?username="+data).done(res=>{
-    				count = res.length;
-    				document.getElementById("count").innerHTML = "("+ count + ")";
-    			});
-    			});
+			$.ajax({
+				url:"/api/get-user-info",
+				async: false,
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+					"Authorization": "Bearer " + localStorage.getItem('jwtToken')
+				},
+				success:function(data) {
+					$.ajax({
+						url:"/api/get-item-by-username?username="+data,
+						async: false,
+						headers: {
+							"Content-Type": "application/x-www-form-urlencoded",
+							"Authorization": "Bearer " + localStorage.getItem('jwtToken')
+						},
+						success:function(res) {
+							count = res.length;
+							document.getElementById("count").innerHTML = "("+ count + ")";
+						}
+					});
+				}
+			});
         }
     }
   
@@ -370,23 +386,28 @@
   	    }
   	  }
   	}
-  	
+
 
 	function checkUsers(){
-	    var result="";
-	    $.ajax({
-	      url:"/get-user-info",
-	      async: false,  
-	      success:function(data) {
-	         result = data; 
-	      }
-	   });
-	    if(result=="anonymousUser"){
-	    	return 0;
-	    }else{
-	    	return result;
-	    }
-	} 
+		var result = "";
+		var jwtToken =  localStorage.getItem('jwtToken');
+		$.ajax({
+			url: "/api/get-user-info",
+			async: false,
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+				"Authorization": "Bearer " + jwtToken
+			},
+			success: function (data) {
+				result = data;
+			}
+		});
+		if (result == null) {
+			return "";
+		} else {
+			return result;
+		}
+	}
 	</script>
 </th:block>
 </html>

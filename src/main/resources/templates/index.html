@@ -312,7 +312,6 @@
             count = listItem.length; 
             document.getElementById("count").innerHTML = "("+ count + ")";
         }else{
-
 			$.ajax({
 				url:"/api/get-user-info",
 				async: false,
@@ -329,6 +328,7 @@
 							"Authorization": "Bearer " + localStorage.getItem('jwtToken')
 						},
 						success:function(res) {
+							console.log(res);
 							count = res.length;
 							document.getElementById("count").innerHTML = "("+ count + ")";
 							console.log(count)
@@ -358,6 +358,7 @@
             	loadCart();
             }; 
     	}else{
+     		console.log("them gio hang")
     		let data = {  
     			username:username,
     			idItem : id 
@@ -401,7 +402,7 @@
 			}
 		});
 		if (result == null) {
-			return null;
+			return "";
 		} else {
 			return result;
 		}

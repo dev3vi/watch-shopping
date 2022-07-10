@@ -306,41 +306,57 @@ tr:nth-child(even) {
    dots[slideIndex-1].className += " active";
    captionText.innerHTML = dots[slideIndex-1].alt;
  }
- 
- 
 
- 
- 
- console.log(username);
  function loadCart(){
 	 var username = checkUsers();
-     if(username==0){
-         count = listItem.length; 
-         document.getElementById("count").innerHTML = "("+ count + ")";
-     }else{
- 	  	$.get("/get-user-info", data => {
- 			$.get("/api/get-item-by-username?username="+data).done(res=>{
- 				count = res.length;
- 				document.getElementById("count").innerHTML = "("+ count + ")";
- 			});
- 			});
-     }
+	 if(username==""){
+		 count = listItem.length;
+		 document.getElementById("count").innerHTML = "("+ count + ")";
+	 }else{
+		 $.ajax({
+			 url:"/api/get-user-info",
+			 async: false,
+			 headers: {
+				 "Content-Type": "application/x-www-form-urlencoded",
+				 "Authorization": "Bearer " + localStorage.getItem('jwtToken')
+			 },
+			 success:function(data) {
+				 $.ajax({
+					 url:"/api/get-item-by-username?username="+data,
+					 async: false,
+					 headers: {
+						 "Content-Type": "application/x-www-form-urlencoded",
+						 "Authorization": "Bearer " + localStorage.getItem('jwtToken')
+					 },
+					 success:function(res) {
+						 count = res.length;
+						 document.getElementById("count").innerHTML = "("+ count + ")";
+					 }
+				 });
+			 }
+		 });
+	 }
  }
-	function checkUsers(){
-	    var result="";
-	    $.ajax({
-	      url:"/get-user-info",
-	      async: false,  
-	      success:function(data) {
-	         result = data; 
-	      }
-	   });
-	    if(result=="anonymousUser"){
-	    	return 0;
-	    }else{
-	    	return result;
-	    }
-	} 
+ function checkUsers(){
+	 var result = "";
+	 var jwtToken =  localStorage.getItem('jwtToken');
+	 $.ajax({
+		 url: "/api/get-user-info",
+		 async: false,
+		 headers: {
+			 "Content-Type": "application/x-www-form-urlencoded",
+			 "Authorization": "Bearer " + jwtToken
+		 },
+		 success: function (data) {
+			 result = data;
+		 }
+	 });
+	 if (result == null) {
+		 return "";
+	 } else {
+		 return result;
+	 }
+ }
  </script>
 
 </th:block>
