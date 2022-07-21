@@ -1,8 +1,10 @@
 package com.example.security.service;
 
+import java.util.Map;
 import java.util.Optional;
 
 import com.example.security.user.CustomUserDetail;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -37,6 +39,10 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService{
 		return this.processAuthenticateUser(userRequest, oAuth2User);
 		
 	}
+
+//	public Map<String, Object> userDetails(@AuthenticationPrincipal OAuth2User user) {
+//		return user.getAttributes();
+//	}
 	
 	private OAuth2User processAuthenticateUser(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
 		OAuth2UserInfo oAuth2UserInfo = new OAuth2UserInfo();

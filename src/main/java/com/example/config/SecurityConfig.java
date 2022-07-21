@@ -1,6 +1,7 @@
 package com.example.config;
 
 import com.example.security.jwt.JwtFilter;
+import com.example.security.jwt.TokenProvider;
 import com.example.security.service.CustomOauth2UserService;
 import com.example.security.service.UserDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Configuration
 @EnableWebSecurity
@@ -28,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomOauth2UserService customOauth2UserService;
 
     private final JwtFilter jwtFilter;
+
 
     @Bean
     @Override
@@ -65,7 +71,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/login", "/", "/register", "/api").permitAll();
+                .antMatchers("/login", "/", "/register", "/api").permitAll()
+                .and()
+                .oauth2Login()
+                .successHandler((request, response, authentication) -> {
+//                    TokenProvider tokenProvider = new TokenProvider();
+//                    tokenProvider.createToken(oAuth2User.getName());
+//                    System.out.println(customOauth2UserService.userDetails());
+                    System.out.println(request.getUserPrincipal().getName());
+                    response
+                } )
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(customOauth2UserService);
 //			.and()
 //			.formLogin()
 //			.loginPage("/login")

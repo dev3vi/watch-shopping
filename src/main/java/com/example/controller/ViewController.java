@@ -3,12 +3,11 @@ package com.example.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.dto.ProductDetail;
 import com.example.dto.RegisterRequest;
@@ -17,6 +16,7 @@ import com.example.service.AuthenService;
 import com.example.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequiredArgsConstructor
@@ -92,7 +92,7 @@ public class ViewController {
 		return "qlBrand";
 	}
 	
-	@GetMapping("/adminImg")
+	@GetMapping("/admin/img")
 	public String img() {
 		return "qlPicture";
 	}
