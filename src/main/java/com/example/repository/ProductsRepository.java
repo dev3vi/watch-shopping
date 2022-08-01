@@ -20,7 +20,6 @@ public interface ProductsRepository extends JpaRepository<Products, Long>{
 	@Query("SELECT name FROM Products")
 	List<String> getName();
 
-
 	Products findByName(String names);
 	
 	Products findTopByOrderByIdDesc(); 
@@ -33,4 +32,6 @@ public interface ProductsRepository extends JpaRepository<Products, Long>{
 
 	Products getBySlug(String slug);
 
+	@Query("select prod from Products prod where prod.slug like %:slug%")
+	List<Optional<Products>> getProdByKey(String slug);
 }

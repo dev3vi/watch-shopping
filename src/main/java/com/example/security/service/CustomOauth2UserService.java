@@ -1,10 +1,11 @@
 package com.example.security.service;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
 import com.example.security.user.CustomUserDetail;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -24,7 +25,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class CustomOauth2UserService extends DefaultOAuth2UserService{
+public class CustomOauth2UserService extends DefaultOAuth2UserService implements OAuth2User{
 	
 	private final UserRepository userRepository;
 	
@@ -34,17 +35,8 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService{
 	 
 
 	@Override
-	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-		OAuth2User oAuth2User = super.loadUser(userRequest);
-		return this.processAuthenticateUser(userRequest, oAuth2User);
-		
-	}
-
-//	public Map<String, Object> userDetails(@AuthenticationPrincipal OAuth2User user) {
-//		return user.getAttributes();
-//	}
-	
-	private OAuth2User processAuthenticateUser(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
+	public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
+		OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
 		OAuth2UserInfo oAuth2UserInfo = new OAuth2UserInfo();
 		oAuth2UserInfo.setId(oAuth2User.getAttribute("sub"));
 		oAuth2UserInfo.setName(oAuth2User.getAttribute("name"));
@@ -54,7 +46,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService{
 		if(!StringUtils.hasText(oAuth2UserInfo.getEmail())) {
 			throw new OAuth2AuthenticationException("Email not found from OAuth2 provider");
 		}
-		
+
 		Optional<User> userOptional = this.userRepository.findById(oAuth2UserInfo.getId());
 		User user;
 		if(userOptional.isPresent()) {
@@ -70,7 +62,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService{
 		User user = new User();
 		
 		user.setUsername(oAuth2UserInfo.getId());
-		user.setHashPassword(passwordEncoder.encode("12345"));
+		user.setHashPassword(passwordEncoder.encode("123456"));
 		user.setType(UserType.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
 		user.setFullName(oAuth2UserInfo.getName());
 		user.setAvatar(oAuth2UserInfo.getImageUrl());
@@ -85,4 +77,18 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService{
 		return this.userRepository.save(user);
 	}
 
+	@Override
+	public Map<String, Object> getAttributes() {
+		return null;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
 }

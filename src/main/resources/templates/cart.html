@@ -190,15 +190,13 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
  <script type="text/javascript">
- 	let stringItem = localStorage.getItem('cart');
- 	let listItem = stringItem.split(",");
- 	console.log(listItem);
+
  	let k = 0;
 	let username = checkUser();
 	async function loadTable(){
  			let html=[];
             let i=0;
-            let username = checkUser(); 
+            let username = checkUser();
             if(username!=""){
             	$.get("api/get-item-by-username?username="+username, data => {
             		let cart = [];
@@ -226,6 +224,8 @@
             	});
             	
             }else{
+                let stringItem = localStorage.getItem('cart');
+                let listItem = stringItem.split(",");
             	let count = listItem.length;
      			listItem.forEach(element=>{
      	 	 	 	$.get( "/api/get-productdto-by-id?id="+element, function(datas) {

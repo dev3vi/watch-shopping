@@ -4,6 +4,7 @@ import com.example.security.jwt.JwtFilter;
 import com.example.security.jwt.TokenProvider;
 import com.example.security.service.CustomOauth2UserService;
 import com.example.security.service.UserDetailServiceImpl;
+import com.nimbusds.jose.shaded.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,12 +17,15 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -34,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtFilter jwtFilter;
 
+    private final TokenProvider tokenProvider;
 
     @Bean
     @Override
@@ -75,37 +80,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .oauth2Login()
                 .successHandler((request, response, authentication) -> {
-//                    TokenProvider tokenProvider = new TokenProvider();
-//                    tokenProvider.createToken(oAuth2User.getName());
-//                    System.out.println(customOauth2UserService.userDetails());
-                    System.out.println(request.getUserPrincipal().getName());
-                    response
-                } )
+//                    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//                    String username = userDetails.getUsername();
+//                    tokenProvider.createToken(username);
+//                    PrintWriter out = response.getWriter();
+//                    out.write(tokenProvider.createToken(username));
+//                    out.flush();
+//                    out.close();
+                    new RedirectServerAuthenticationSuccessHandler("http://localhost:8080/index");
+                })
                 .loginPage("/login")
                 .userInfoEndpoint()
                 .userService(customOauth2UserService);
-//			.and()
-//			.formLogin()
-//			.loginPage("/login")
-//			.defaultSuccessUrl("/")
-//			.failureUrl("/login?error=true")
-//			.permitAll()
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/")
-//                .deleteCookies("JSESSIONID").invalidateHttpSession(true)
-//                .permitAll()
-//                .and()
-//                .exceptionHandling().accessDeniedPage("/403")
-//                .and()
-//                .oauth2Login()
-//                .loginPage("/login")
-//                .defaultSuccessUrl("/")
-//                .failureUrl("/login?errorSocial=true")
-//                .userInfoEndpoint()
-//                .userService(customOauth2UserService);
-
 
     }
 }

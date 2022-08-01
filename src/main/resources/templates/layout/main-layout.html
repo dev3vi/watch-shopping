@@ -53,12 +53,12 @@
                         </div>
                         <!--end of col-->
                         <div class="col ">
-                            <input class="form-control form-control-lg form-control-borderless" type="search"
+                            <input class="form-control form-control-lg form-control-borderless" type="search" id="key"
                                    placeholder="Search topics or keywords">
                         </div>
                         <!--end of col-->
                         <div class="col-auto">
-                            <button class="btn btn-lg btn-success" type="submit">Search</button>
+                            <a class="btn btn-lg btn-success" onclick=findProd()>Search</a>
                         </div>
                         <!--end of col-->
                     </div>
@@ -177,6 +177,18 @@
 
     function logoutFunc(){
         localStorage.removeItem("jwtToken");
+    }
+
+    function findProd(){
+        let data =  document.getElementById("key").value;
+        var jwtToken =  localStorage.getItem('jwtToken');
+        $.ajax({
+            url: "/api/get-item-by-key?key="+data,
+            async: false,
+            success: function (data) {
+                console.log(data);
+            }
+        });
     }
 
 
