@@ -1,22 +1,19 @@
 package com.example.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import org.springframework.http.HttpStatus;
+import com.example.dto.ProductDetail;
+import com.example.dto.RegisterRequest;
+import com.example.service.AuthenService;
+import com.example.service.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.dto.ProductDetail;
-import com.example.dto.RegisterRequest;
-import com.example.entity.Products;
-import com.example.service.AuthenService;
-import com.example.service.ProductService;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.server.ResponseStatusException;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
