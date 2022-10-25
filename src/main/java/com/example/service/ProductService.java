@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.example.dto.response.ProductsResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +22,7 @@ public interface ProductService {
 
 	void createProduct(HttpServletRequest httpServletRequest, ProductRequest request) throws IOException;
 
-	List<ProductDetail> getAllProductDetail();
+	ProductsResponse getAllProductDetail(Integer page);
 
 	void updateProduct(HttpServletRequest httpServletRequest, ProductRequest request) throws IOException;
 

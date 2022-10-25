@@ -34,4 +34,7 @@ public interface ProductsRepository extends JpaRepository<Products, Long>{
 
 	@Query("select prod from Products prod where prod.slug like %:slug%")
 	List<Optional<Products>> getProdByKey(String slug);
+
+	@Query(value = "select p.* from products p limit 12 offset :index", nativeQuery = true)
+	List<Products> findProductPage(Integer index);
 }

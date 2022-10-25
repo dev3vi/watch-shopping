@@ -28,7 +28,7 @@
     }
     .wrapper {
         width: 240px;
-        height: 380px;
+        height: 420px;
         float: left;
         /*border:  1px solid LightGray;*/
         box-shadow: 0 0 8px 0px #888888;
@@ -121,6 +121,9 @@
     #trang-chu{
     	background:#809fff
     }
+   .justify-content-end {
+	   margin-top: 20px;
+   }
 </style>
 </th:block>
 </head>                                         
@@ -201,7 +204,21 @@
        <div class="sp" style="height: auto;width: 1040px;"></div>
        </div>
        <div class="clear"></div>
+		<nav aria-label="Page navigation example"style="margin-left: 100px">
+			<ul class="pagination justify-content-end">
+				<li class="page-item disabled">
+					<a class="page-link" href="#" tabindex="-1">Previous</a>
+				</li>
+				<li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<li class="page-item">
+					<a class="page-link" href="#">Next</a>
+				</li>
+			</ul>
+		</nav>
     </div>
+
 </div>
 </div>
 
@@ -217,7 +234,7 @@
               $.get("/api/all-product-detail").done(res=>{
                   let html=[];
                   let i=0;
-                  res.forEach(element => {
+                  res.products.forEach(element => {
                 	  x=element.price.toLocaleString('vi', {style : 'currency', currency : 'vnd'});
                 	 
                       html[i]=`<div class="wrapper ${element.brands}">
@@ -226,7 +243,7 @@
                                           <a class="links" href="/products/${element.slug}"><img class="zoom" src="${element.image}"></a>
                                       </div>
                                       <div class="name" style="margin:12px 8px 8px 30px">
-                                          <strong ><a class="links" href="#">${element.name} - ${element.gender}</a></strong>
+                                          <strong ><a class="links" href="#">${element.name}</a></strong>
                                       </div>  
                                   </div>
                                   <div class="sp0" style="width: 200px; height:  110px;margin: auto">

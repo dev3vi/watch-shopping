@@ -40,9 +40,7 @@ public class ViewController {
 	
 	@GetMapping("/products/{slug}")
 	public String productDetail(Model model,@PathVariable(value = "slug", required = false) String slug) {
-		
 		ProductDetail products = productService.getProdDetail(slug);
-		System.out.println(products);
 		model.addAttribute("productId", products);
 		return "product-detail";
 	}

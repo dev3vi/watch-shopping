@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.example.dto.response.ProductsResponse;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,160 +35,161 @@ import com.example.service.ProductService;
 
 @Service
 public class ProductServiceimpl implements ProductService {
+    @Autowired
+    protected MapperFacade mapper;
 
-	@Autowired
-	private ProductsRepository productRepository;
+    @Autowired
+    private ProductsRepository productRepository;
 
-	@Autowired
-	private BrandRepository brandRepository;
+    @Autowired
+    private BrandRepository brandRepository;
 
-	@Autowired
-	private ChatLieuMatRepository chatLieuMatRepository;
+    @Autowired
+    private ChatLieuMatRepository chatLieuMatRepository;
 
-	@Autowired
-	private ChatLieuDayRepository chatLieuDayRepository;
-	
-
-	@Value("D://watch/product")
-	private String location;
-
-	@Override
-	public Optional<ProductDTO> getAllProductDto(Long id) {
-		
-		Optional<Products> products = productRepository.findById(id);
-		
-		 if(products.isPresent()) { 
-			 Optional<ProductDTO> dtos = Optional.of(new
-		 ProductDTO(products.get().getName(), products.get().getPrice(),products.get().getImage(), products.get().getSlug(),
-				 products.get().getQuantity(), products.get().getProductType(), products.get().getDescription(),
-				 products.get().getGender(), products.get().getDoChiuNuoc(), products.get().getBrands().getId(),
-				 products.get().getCLDay().getId(),products.get().getCLMat().getId())); 
-			/* System.out.println(dtos.toString()); */
-			 return dtos;
-		 }else {
-			 return null;
-		 }
-	}
-	
-	@Override
-	@Transactional
-	public void createProduct(HttpServletRequest httpServletRequest, ProductRequest request) throws IOException {
-		Products product = new Products();
-		Optional<Brand> brand = brandRepository.findById(request.getBrands());
-		Optional<ChatLieuMat> clmat = chatLieuMatRepository.findById(request.getCLMat());
-		Optional<ChatLieuDay> clday = chatLieuDayRepository.findById(request.getCLDay());
-		product.setName(request.getName());
-		product.setPrice(request.getPrice());
-		product.setQuantity(request.getQuantity());
-		product.setProductType(request.getProductType());
-		product.setDescription(request.getDescription());
-		product.setDoChiuNuoc(request.getDoChiuNuoc());
-		product.setGender(request.getGender());
-		product.setSlug(toSlug(request.getName()));
-		brand.ifPresent(b -> product.setBrands(b));
-		clmat.ifPresent(m -> product.setCLMat(m));
-		clday.ifPresent(d -> product.setCLDay(d));
-		if (request.getImage() != null) {
-			product.setImage(FileUtils.saveImg(request.getImage(), this.location, httpServletRequest));
-		}
-		productRepository.save(product);
-	}
-
-	@Override
-	@Transactional
-	public void updateProduct(HttpServletRequest httpServletRequest, ProductRequest request) throws IOException {
-		Optional<Products> productss = productRepository.findById(request.getId());
-		Optional<Brand> brand = brandRepository.findById(request.getBrands());
-		Optional<ChatLieuMat> clmat = chatLieuMatRepository.findById(request.getCLMat());
-		Optional<ChatLieuDay> clday = chatLieuDayRepository.findById(request.getCLDay());
-		productss.ifPresent(product->{
-				product.setName(request.getName());
-				product.setPrice(request.getPrice());
-				product.setQuantity(request.getQuantity());
-				product.setProductType(request.getProductType());
-				product.setDescription(request.getDescription());
-				product.setDoChiuNuoc(request.getDoChiuNuoc());
-				product.setGender(request.getGender());
-				product.setSlug(toSlug(request.getName()));
-				brand.ifPresent(b -> product.setBrands(b));
-				clmat.ifPresent(m -> product.setCLMat(m));
-				clday.ifPresent(d -> product.setCLDay(d));
-				if (request.getImage() != null) {
-					try {
-						product.setImage(FileUtils.saveImg(request.getImage(), this.location, httpServletRequest));
-					} catch (IOException e) {
-					}
-				}
-				productRepository.save(product);
-		});
-
-	}
-	
-	@Override
-	public List<ProductDetail> getAllProductDetail() {
-		List<Products> products = productRepository.findAll();
-	
-		return	products.stream().map(prod->ProductDetail.builder().id(prod.getId())
-				.name(prod.getName())
-				.price(prod.getPrice())
-				.quantity(prod.getQuantity())
-				.description(prod.getDescription())
-				.doChiuNuoc(prod.getDoChiuNuoc())
-				.gender(prod.getGender())
-				.slug(prod.getSlug())
-				.image(prod.getImage())
-				.brands(prod.getBrands().getBrandName())
-				.cLDay(prod.getCLDay().getLoaiDay())
-				.cLMat(prod.getCLMat().getLoaiMatKinh())
-				.productType(prod.getProductType())
-				.img(prod.getProductImg())
-				.build()
-				).collect(Collectors.toList());		
-	
-	}
-
-	@Override
-	public void deleteProduct(Long id) {
-		if(productRepository.findById(id).isPresent()) {
-			productRepository.deleteById(id);
-		}			
-	}
+    @Autowired
+    private ChatLieuDayRepository chatLieuDayRepository;
 
 
+    @Value("D://watch/product")
+    private String location;
 
-	@Override
-	public String saveFile(MultipartFile img, HttpServletRequest httpServletRequest) throws IOException {
-	
-		return	FileUtils.saveImg(img, this.location, httpServletRequest);	
-	}
+    @Override
+    public Optional<ProductDTO> getAllProductDto(Long id) {
 
-	@Override
-	public ProductDetail getProdDetail(String slug) {
-		System.out.println(slug);
-		Products  products =  productRepository.getBySlug(slug);
+        Optional<Products> products = productRepository.findById(id);
 
-		return ProductDetail.builder().id(products.getId())
-								.name(products.getName())
-								.cLDay(products.getCLDay().getLoaiDay())
-								.brands(products.getBrands().getBrandName())
-								.cLMat(products.getCLMat().getLoaiMatKinh())
-								.doChiuNuoc(products.getDoChiuNuoc())
-								.description(products.getDescription())
-								.gender(products.getGender())
-								.img(products.getProductImg())
-								.productType(products.getProductType())
-								.quantity(products.getQuantity())
-								.price(products.getPrice()).build();
+        if (products.isPresent()) {
+            Optional<ProductDTO> dtos = Optional.of(new
+                    ProductDTO(products.get().getName(), products.get().getPrice(), products.get().getImage(), products.get().getSlug(),
+                    products.get().getQuantity(), products.get().getProductType(), products.get().getDescription(),
+                    products.get().getGender(), products.get().getDoChiuNuoc(), products.get().getBrands().getId(),
+                    products.get().getCLDay().getId(), products.get().getCLMat().getId()));
+            return dtos;
+        } else {
+            return null;
+        }
+    }
 
-	
-	}
-	  public static String toSlug(String input) {
-		  Pattern NONLATIN = Pattern.compile("[^\\w-]");
-		  Pattern WHITESPACE = Pattern.compile("[\\s]");
-	    String nowhitespace = WHITESPACE.matcher(input).replaceAll("-");
-	    String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
-	    String slug = NONLATIN.matcher(normalized).replaceAll("");
-	    return slug.toLowerCase(Locale.ENGLISH);
-	  }
+    @Override
+    @Transactional
+    public void createProduct(HttpServletRequest httpServletRequest, ProductRequest request) throws IOException {
+        Products product = new Products();
+        Optional<Brand> brand = brandRepository.findById(request.getBrands());
+        Optional<ChatLieuMat> clmat = chatLieuMatRepository.findById(request.getCLMat());
+        Optional<ChatLieuDay> clday = chatLieuDayRepository.findById(request.getCLDay());
+        product.setName(request.getName());
+        product.setPrice(request.getPrice());
+        product.setQuantity(request.getQuantity());
+        product.setProductType(request.getProductType());
+        product.setDescription(request.getDescription());
+        product.setDoChiuNuoc(request.getDoChiuNuoc());
+        product.setGender(request.getGender());
+        product.setSlug(toSlug(request.getName()));
+        brand.ifPresent(b -> product.setBrands(b));
+        clmat.ifPresent(m -> product.setCLMat(m));
+        clday.ifPresent(d -> product.setCLDay(d));
+        if (request.getImage() != null) {
+            product.setImage(FileUtils.saveImg(request.getImage(), this.location, httpServletRequest));
+        }
+        productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
+    public void updateProduct(HttpServletRequest httpServletRequest, ProductRequest request) throws IOException {
+        Optional<Products> productss = productRepository.findById(request.getId());
+        Optional<Brand> brand = brandRepository.findById(request.getBrands());
+        Optional<ChatLieuMat> clmat = chatLieuMatRepository.findById(request.getCLMat());
+        Optional<ChatLieuDay> clday = chatLieuDayRepository.findById(request.getCLDay());
+        productss.ifPresent(product -> {
+            product.setName(request.getName());
+            product.setPrice(request.getPrice());
+            product.setQuantity(request.getQuantity());
+            product.setProductType(request.getProductType());
+            product.setDescription(request.getDescription());
+            product.setDoChiuNuoc(request.getDoChiuNuoc());
+            product.setGender(request.getGender());
+            product.setSlug(toSlug(request.getName()));
+            brand.ifPresent(b -> product.setBrands(b));
+            clmat.ifPresent(m -> product.setCLMat(m));
+            clday.ifPresent(d -> product.setCLDay(d));
+            if (request.getImage() != null) {
+                try {
+                    product.setImage(FileUtils.saveImg(request.getImage(), this.location, httpServletRequest));
+                } catch (IOException e) {
+                }
+            }
+            productRepository.save(product);
+        });
+
+    }
+
+    @Override
+    public ProductsResponse getAllProductDetail(Integer page) {
+        ProductsResponse response = new ProductsResponse();
+        Integer index = (page - 1) * 12;
+        Integer count = productRepository.getQuantity();
+        response.setCount(count);
+        List<Products> products = productRepository.findProductPage(index);
+        List<ProductDetail> productDetails =
+        products.stream().map(prod -> ProductDetail.builder().id(prod.getId())
+                .name(prod.getName())
+                .price(prod.getPrice())
+                .quantity(prod.getQuantity())
+                .description(prod.getDescription())
+                .doChiuNuoc(prod.getDoChiuNuoc())
+                .gender(prod.getGender())
+                .slug(prod.getSlug())
+                .image(prod.getImage())
+                .brands(prod.getBrands().getBrandName())
+                .cLDay(prod.getCLDay().getLoaiDay())
+                .cLMat(prod.getCLMat().getLoaiMatKinh())
+                .productType(prod.getProductType())
+                .img(prod.getProductImg())
+                .build()
+        ).collect(Collectors.toList());
+        response.setProducts(productDetails);
+        return response;
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        if (productRepository.findById(id).isPresent()) {
+            productRepository.deleteById(id);
+        }
+    }
+
+
+    @Override
+    public String saveFile(MultipartFile img, HttpServletRequest httpServletRequest) throws IOException {
+        return FileUtils.saveImg(img, this.location, httpServletRequest);
+    }
+
+    @Override
+    public ProductDetail getProdDetail(String slug) {
+        Products products = productRepository.getBySlug(slug);
+        return ProductDetail.builder().id(products.getId())
+                .name(products.getName())
+                .cLDay(products.getCLDay().getLoaiDay())
+                .brands(products.getBrands().getBrandName())
+                .cLMat(products.getCLMat().getLoaiMatKinh())
+                .doChiuNuoc(products.getDoChiuNuoc())
+                .description(products.getDescription())
+                .gender(products.getGender())
+                .img(products.getProductImg())
+                .productType(products.getProductType())
+                .quantity(products.getQuantity())
+                .price(products.getPrice()).build();
+    }
+
+    public static String toSlug(String input) {
+        Pattern NONLATIN = Pattern.compile("[^\\w-]");
+        Pattern WHITESPACE = Pattern.compile("[\\s]");
+        String nowhitespace = WHITESPACE.matcher(input).replaceAll("-");
+        String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
+        String slug = NONLATIN.matcher(normalized).replaceAll("");
+        return slug.toLowerCase(Locale.ENGLISH);
+    }
 
 }
