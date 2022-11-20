@@ -25,11 +25,11 @@ public class WebDongHoApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		productsRepository.findAll().forEach(e->{
-			String nameSlug = this.toSlug(e.getName());
-			productsRepository.setSlug(nameSlug, e.getId());
-
-		});
+//		productsRepository.findAll().forEach(e->{
+//			String nameSlug = this.toSlug(e.getName());
+//			productsRepository.setSlug(nameSlug, e.getId());
+//
+//		});
 		
 	}
 	  public static String toSlug(String input) {
