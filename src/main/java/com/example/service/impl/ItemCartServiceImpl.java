@@ -18,56 +18,46 @@ import com.example.repository.UserRepository;
 import com.example.service.ItemCartService;
 
 @Service
-public class ItemCartServiceImpl implements ItemCartService{
+public class ItemCartServiceImpl implements ItemCartService {
 
-	@Autowired
-	private CartRepository cartRepository;
-	
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private ProductsRepository productsRepository;
-	
-	@Override
-	public List<Products> getItem(String username) {
-		System.out.println(username);
-//		cartRepository.findAll().stream().forEach(a->{
-//			System.out.println(a.getProducts().getName());
-//		});;
-// 
-//		cartRepository.findAll().forEach(e->{
-//			System.out.println(e);
-//		});
-		List<Products> prod = new ArrayList<Products>();
-		List<Cart> cart = cartRepository.findByIdUsername(username);
-		cart.forEach(e->{
-			prod.add(e.getProducts());
-		//	System.out.println(e.getProducts());
-		});
-		
-		return prod;
-	}
+    @Autowired
+    private CartRepository cartRepository;
 
-	@Override
-	public void linkItemAndUser(ItemRequest itemRequest) {
-		CartId cartId = new CartId();
-		Cart cart = new Cart();
-	    User user =  userRepository.getById(itemRequest.getUsername());
-		cartId.setProductId(itemRequest.getIdItem());
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ProductsRepository productsRepository;
+
+    @Override
+    public List<Products> getItem(String username) {
+        List<Products> prod = new ArrayList<>();
+        List<Cart> cart = cartRepository.findByIdUsername(username);
+        cart.forEach(e -> {
+            prod.add(e.getProducts());
+        });
+        return prod;
+    }
+
+    @Override
+    public void linkItemAndUser(ItemRequest itemRequest) {
+        CartId cartId = new CartId();
+        Cart cart = new Cart();
+        User user = userRepository.getById(itemRequest.getUsername());
+        cartId.setProductId(itemRequest.getIdItem());
 //		cartId.setUsername(itemRequest.getUsername());		
-		cart.setUser(user);
-		cart.setId(cartId);
+        cart.setUser(user);
+        cart.setId(cartId);
 //		cart.setProducts(products);		
-		cartRepository.save(cart);
-	}
+        cartRepository.save(cart);
+    }
 
-	@Override
-	public void deleteItem(ItemRequest itemRequest) {
-		 CartId cartId = new CartId();
-		 cartId.setUsername(itemRequest.getUsername());		
-		 cartId.setProductId(itemRequest.getIdItem());
-		 cartRepository.deleteById(cartId);
-	}
+    @Override
+    public void deleteItem(ItemRequest itemRequest) {
+        CartId cartId = new CartId();
+        cartId.setUsername(itemRequest.getUsername());
+        cartId.setProductId(itemRequest.getIdItem());
+        cartRepository.deleteById(cartId);
+    }
 
 }

@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -44,4 +45,11 @@ public class Image {
 	@UpdateTimestamp
 	@JsonIgnore
 	private LocalDateTime updateAt;
+
+	public Image(Products e, String image) {
+		this.productId = e;
+		this.dataImg = image;
+	}
+	public Image() {
+	}
 }

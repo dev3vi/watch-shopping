@@ -2,9 +2,15 @@ package com.example;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
+import com.example.entity.Image;
+import com.example.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,7 +36,7 @@ public class WebDongHoApplication implements CommandLineRunner{
 //			productsRepository.setSlug(nameSlug, e.getId());
 //
 //		});
-		
+
 	}
 	  public static String toSlug(String input) {
 		  Pattern NONLATIN = Pattern.compile("[^\\w-]");

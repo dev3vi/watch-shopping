@@ -33,35 +33,22 @@ public class Products {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	private String name;
-	
 	private BigDecimal price;
-	
-	private String image; 
-	
+	private String image;
 	private String slug;
-	
 	private Long quantity;
-	
 	private String productType;
-	
 	private String description;
-	
 	private String gender;
-	
 	private String doChiuNuoc;
-	
-	private LocalDateTime createBy;
-	
-	private LocalDateTime updateBy;
-	
+	private String createBy;
+	private String updateBy;
 	@CreationTimestamp
 	private LocalDateTime createAt;
-	
 	@UpdateTimestamp
 	private LocalDateTime updateAt;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="brand_id")
 	@JsonIgnore

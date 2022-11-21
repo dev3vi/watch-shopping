@@ -220,7 +220,7 @@
 	    function loadData() {
 	      $.get("/api/all-product-detail").done(res=>{
 	        let table='';
-	        res.forEach(element => {
+	        res.products.forEach(element => {
 	          let html=`<tr>
 	                <th scope="row">${element.id}</th>
 	                <td>${element.name}</td>
