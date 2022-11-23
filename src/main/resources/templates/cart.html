@@ -306,12 +306,10 @@
         			username: username,
         			idItem : element 
         		}
-    		console.log(data);
  		    $.ajax({
  			      url:"/api/delete-item-by-username",
  			      type: "delete",
-
- 			     contentType:'application/json',
+ 			      contentType:'application/json',
  			      data:JSON.stringify(data),
  			      success:function() {
  			    	 window.location.reload();

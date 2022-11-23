@@ -1,7 +1,9 @@
 package com.example.repository.dao.impl;
 
+import com.example.dto.ProductDetail;
 import com.example.dto.request.BaseRequest;
 import com.example.dto.request.ProductFilterRequest;
+import com.example.dto.response.ProductsResponse;
 import com.example.entity.Products;
 import com.example.repository.dao.ProductsDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,8 @@ public class ProductsDaoImpl implements ProductsDao {
     private BaseDaoServiceImpl baseDaoService;
 
     @Override
-    public List<Products> productFilter(ProductFilterRequest request) {
+    public ProductsResponse productFilter(ProductFilterRequest request) {
+        ProductsResponse productsResponse = new ProductsResponse();
         Integer index = getIndex(request);
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT p FROM Products p WHERE 1 = 1 ");
@@ -24,20 +27,24 @@ public class ProductsDaoImpl implements ProductsDao {
             sql.append(getIdByName("brand", request.getBrand()) + " ");
         }
         if(request.getGender() != null) {
-            sql.append("AND p.gender = '" + request.getGender() + "' ");
+            sql.append("AND p.gender like '%" + request.getGender() + "%' ");
         }
         if (request.getSortBy() != null) {
-            sql.append("AND ").append(getSortBy(request.getSortBy())).append("= ").append(request.getSortType());
+            sql.append(getSortBy(request.getSortBy())).append(request.getSortType());
         }
-        return (List<Products>) baseDaoService.getNativeQuery(sql.toString(), index);
+        List<ProductDetail> productDetails = (List<ProductDetail>) baseDaoService.getNativeQuery(sql.toString(), index);
+        Integer count = baseDaoService.getCountNativeQuery(sql.toString());
+        productsResponse.setCount(count);
+        productsResponse.setProducts(productDetails);
+        return productsResponse;
     }
 
     private Integer getIndex(BaseRequest request) {
        return (request.getPage() - 1) * 12;
     }
     private String getSortBy(String sortBy) {
-        if("brand".equals(sortBy)) {
-            return "p.brand_id";
+        if("price".equals(sortBy)) {
+            return "ORDER BY price ";
         }
         return null;
     }

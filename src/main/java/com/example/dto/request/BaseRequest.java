@@ -13,4 +13,11 @@ public class BaseRequest {
     private Integer page = 1;
     private String sortBy;
     private String sortType;
+
+    public String getSortType() {
+        if (this.sortType == null || this.sortType.equals("")) {
+            return "ASC";
+        }
+        return this.sortType;
+    }
 }

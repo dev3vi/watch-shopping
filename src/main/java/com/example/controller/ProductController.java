@@ -72,12 +72,11 @@ public class ProductController {
 
     @DeleteMapping("/delete-product")
     public void deleteProduct(Long id) throws IOException {
-        System.out.println("delete" + id);
         this.productService.deleteProduct(id);
     }
 
-    @GetMapping("/product-filter")
-    public List<Products> FilterProduct(@RequestBody ProductFilterRequest request) {
+    @PostMapping("/product-filter")
+    public ProductsResponse FilterProduct(@RequestBody ProductFilterRequest request) {
         return productsDao.productFilter(request);
     }
 }

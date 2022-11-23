@@ -33,7 +33,7 @@
         /*border:  1px solid LightGray;*/
         box-shadow: 0 0 8px 0px #888888;
         color: black;
-        display: none; 
+        /*display: none; */
         border-radius: 10px;
         margin: 10px;
     }
@@ -228,81 +228,61 @@
 <!--   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 	<script type="text/javascript">
+	loadData();
 	function loadData() {
+		let datas = {
+			}
+		this.getData(datas);
+	}
+	function getData(datas) {
 
-
-              $.get("/api/all-product-detail").done(res=>{
-                  let html=[];
-                  let i=0;
-                  res.products.forEach(element => {
-                	  x=element.price.toLocaleString('vi', {style : 'currency', currency : 'vnd'});
-                	 
-                      html[i]=`<div class="wrapper ${element.brands}">
+		$.ajax({
+			url: '/api/product-filter',
+			type: 'post',
+			contentType: 'application/json',
+			data: JSON.stringify(datas),
+			success: function (data) {
+				let html=[];
+				$('.sp').empty()
+				let i=0;
+				data.products.forEach(element => {
+					x=element.price.toLocaleString('vi', {style : 'currency', currency : 'vnd'});
+					html[i]=`<div class="wrapper ${element.brands}">
                                   <div class="ava-name">
-                                      <div class="avatars">   
+                                      <div class="avatars">
                                           <a class="links" href="/products/${element.slug}"><img class="zoom" src="${element.image}"></a>
                                       </div>
                                       <div class="name" style="margin:12px 8px 8px 30px">
                                           <strong ><a class="links" href="#">${element.name}</a></strong>
-                                      </div>  
+                                      </div>
                                   </div>
                                   <div class="sp0" style="width: 200px; height:  110px;margin: auto">
                                           <p style="margin: 10px 0px 0px 8px; color: red"><strong>${x}</strong><span>
                                           <i class='fas fa-shipping-fast' style='font-size:22px;color:red; float:right;'></i></span></p>
                                           <p style="margin: 8px 0px 10px 8px;">Loại: ${element.productType}</p>
-                                          <button type="button" class="btn btn-warning" onclick="addCart(${element.id})" style="margin-left:55px">Add Cart</button>
+                                          <button type="button" class="btn btn-warning" onclick="addCart(${element.id})" style="margin-left:55px; padding: 3px">Add Cart</button>
                                          <!--  <a class="links buy" href="#">Add cart</a> -->
-                                    
+
                                   </div>
                               </div>`
-                        i+=1;
-                  });
-                  for (let j = 0;j<=i; j++) {               	  
-                      $('.sp').append(html[j]);
-                  }
-                  loadCart();
-                   filterSelection("all");  
-              });
+					i+=1;
+				});
+				for (let j = 0;j<=i; j++) {
+					$('.sp').append(html[j]);
+				}
+				loadCart();
+
+			}
+		});
 	}
-	loadData();
+
 
 	  function filterSelection(c) {
-          var x, i;
-          x = document.getElementsByClassName("wrapper");
-          if (c == "all") c = "";
-          for (i = 0; i < x.length; i++) {
-            RemoveClass(x[i],"show");  
-            if (x[i].className.indexOf(c) > -1) {
-                AddClass(x[i], "show");
-              
-            }
-          }
-        }
-
-        function AddClass(element, name) {
-          var i, arr1, arr2;
-          /* convert string to arr */
-          arr1 = element.className.split(" ");
-         /*  console.log(arr1); */
-          arr2 = name.split(" ");
-          /* console.log(arr2); */
-          for (i = 0; i < arr2.length; i++) {
-            element.className += " " + arr2[i];
-          } 
-        }
-
-        function RemoveClass(element, name) {
-          var i, arr1, arr2;
-          arr1 = element.className.split(" ");
-          arr2 = name.split(" ");
-            while (arr1.indexOf(arr2[0]) > -1) {
-              /*  console.log(arr1.indexOf(arr2[0])); */
-              arr1.splice(arr1.indexOf(arr2[0]), 1);    
-            }
-          element.className = arr1.join(" ");
+		  let datas = {brand: c};
+		  this.getData(datas);
         }
     // Add active class to the current button (highlight it)
-     var btnContainer = document.getElementById("myBtnContainer");
+    var btnContainer = document.getElementById("myBtnContainer");
     var btns = btnContainer.getElementsByClassName("btns");
     for (var i = 0; i < btns.length; i++) {
       btns[i].addEventListener("click", function(){
@@ -324,7 +304,6 @@
     }
     var username = checkUsers();
     function loadCart(){
-    	console.log(username)
         if(username==""){
             count = listItem.length; 
             document.getElementById("count").innerHTML = "("+ count + ")";
@@ -345,21 +324,12 @@
 							"Authorization": "Bearer " + localStorage.getItem('jwtToken')
 						},
 						success:function(res) {
-							console.log(res);
 							count = res.length;
 							document.getElementById("count").innerHTML = "("+ count + ")";
-							console.log(count)
 						}
 					});
 				}
 			});
-
-    	  	// $.get("/api/get-user-info", data => {
-    		// 	$.get("/cart/get-item-by-username?username="+data).done(res=>{
-    		// 		count = res.length;
-    		// 		document.getElementById("count").innerHTML = "("+ count + ")";
-    		// 	});
-    		// 	});
         }
     }
   
