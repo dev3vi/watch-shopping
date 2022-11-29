@@ -35,6 +35,7 @@ public class ProductsDaoImpl implements ProductsDao {
         List<ProductDetail> productDetails = (List<ProductDetail>) baseDaoService.getNativeQuery(sql.toString(), index);
         Integer count = baseDaoService.getCountNativeQuery(sql.toString());
         productsResponse.setCount(count);
+        productsResponse.setPage(request.getPage());
         productsResponse.setProducts(productDetails);
         return productsResponse;
     }

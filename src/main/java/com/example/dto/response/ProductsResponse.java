@@ -8,5 +8,6 @@ import java.util.List;
 @Data
 public class ProductsResponse {
     private Integer count;
+    private Integer page;
     private List<ProductDetail> products;
 }
