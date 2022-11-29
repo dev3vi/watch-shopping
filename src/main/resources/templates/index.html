@@ -169,22 +169,16 @@
 
 	<div style="margin-top: 10px">
 	            <div id="myBtnContainer">
-                <button type="button" class="btns mr-2 activess" onclick="filterSelection('all')">Show All</button>  
-               
+                <button type="button" class="btns mr-2 activess" onclick="filterSelection('all')">Show All</button>
                 <button type="button" class="btns mr-2" onclick="filterSelection('G-Shock')">G-shock</button>
-                    
                 <button type="button" class="btns mr-2 " onclick="filterSelection('Citizen')">Citizen</button>
-                
                 <button type="button" class="btns mr-2" onclick="filterSelection('Casio')">Casio</button>
-                
                 <button type="button" class="btns mr-2 " onclick="filterSelection('Titan')">Titan</button>
-                   
-                   <span> |  &nbsp;</span> 
+                 <span> |  &nbsp;</span>
                 <button type="button" class=" mr-2" >
                     <i class="fas fa-sort-amount-up"></i>
                     Giá cao
                 </button>
-  
                 <button type="button" class=" mr-2">
                     <i class="fas fa-sort-amount-down"></i>
                     <a href="/?keyword=1" style = "text-decoration: none;color:black">Giá thấp</a>
@@ -205,16 +199,7 @@
        </div>
        <div class="clear"></div>
 		<nav aria-label="Page navigation example"style="margin-left: 100px">
-			<ul class="pagination justify-content-end">
-				<li class="page-item disabled">
-					<a class="page-link" href="#" tabindex="-1">Previous</a>
-				</li>
-				<li class="page-item"><a class="page-link" href="#">1</a></li>
-				<li class="page-item"><a class="page-link" href="#">2</a></li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item">
-					<a class="page-link" href="#">Next</a>
-				</li>
+			<ul id="pageNumber" class="pagination justify-content-end ">
 			</ul>
 		</nav>
     </div>
@@ -225,7 +210,6 @@
 </body>
 <th:block id="custom-script">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!--   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 	<script type="text/javascript">
 	loadData();
@@ -235,7 +219,6 @@
 		this.getData(datas);
 	}
 	function getData(datas) {
-
 		$.ajax({
 			url: '/api/product-filter',
 			type: 'post',
@@ -243,7 +226,14 @@
 			data: JSON.stringify(datas),
 			success: function (data) {
 				let html=[];
+				let htmlPage=[];
 				$('.sp').empty()
+				$('#pageNumber').empty()
+				$('#pageNumber').append(`
+				<li class="page-item"  id="Previous">
+					<a class="page-link" href="#" tabindex="-1">Previous</a>
+				</li>
+				`)
 				let i=0;
 				data.products.forEach(element => {
 					x=element.price.toLocaleString('vi', {style : 'currency', currency : 'vnd'});
@@ -270,6 +260,18 @@
 				for (let j = 0;j<=i; j++) {
 					$('.sp').append(html[j]);
 				}
+				let pageNumber = Math.ceil(data.count/12);
+				for (let count = 1; count <= pageNumber; count ++) {
+					htmlPage[count] = `<li class="page-item" value="${count}" id="pagez-${count}" ><a class="page-link" onclick="getDataOfPage(${count})">${count}</a></li>`
+				}
+				for (let count = 1; count <= pageNumber; count ++) {
+					$('#pageNumber').append(htmlPage[count]);
+				}
+				$('#pageNumber').append(`
+				<li class="page-item disabled" id="next">
+					<a class="page-link" href="#" tabindex="-1">Next</a>
+				</li>
+				`)
 				loadCart();
 
 			}
@@ -278,7 +280,12 @@
 
 
 	  function filterSelection(c) {
-		  let datas = {brand: c};
+		  let datas;
+		  if (c === "all") {
+		  	datas = {};
+		  } else {
+			  datas =  {brand: c};
+		  }
 		  this.getData(datas);
         }
     // Add active class to the current button (highlight it)
@@ -287,13 +294,11 @@
     for (var i = 0; i < btns.length; i++) {
       btns[i].addEventListener("click", function(){
         var current = document.getElementsByClassName("activess");
-       /*  console.log(current); */
         current[0].className = current[0].className.replace(" activess", "");
         this.className += " activess";
       });
-      
     }
-    
+
     var key = 'cart';
     var value = localStorage.getItem(key);	
     var count;
@@ -334,7 +339,6 @@
     }
   
    function addCart(id){
-    	console.log(username+"---");
      	if(username==""){
             if(check(listItem, id)==1){
             	alert("Sản phẩm đã có trong giỏ hàng!");
@@ -393,7 +397,12 @@
 		} else {
 			return result;
 		}
-	} 
+	}
+	function getDataOfPage(count) {
+		let data = {page: count};
+		this.getData(data);
+		document.getElementById("pagez-"+count).classList.add("acctive");
+	}
 	</script>
 </th:block>
 </html>
