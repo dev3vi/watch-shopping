@@ -27,7 +27,7 @@ public class ProductsDaoImpl implements ProductsDao {
             sql.append(getIdByName("brand", request.getBrand()) + " ");
         }
         if(request.getGender() != null) {
-            sql.append("AND p.gender like '%" + request.getGender() + "%' ");
+            sql.append("AND p.gender = '" + request.getGender() + "' ");
         }
         if (request.getSortBy() != null) {
             sql.append(getSortBy(request.getSortBy())).append(request.getSortType());

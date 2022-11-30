@@ -116,7 +116,8 @@
                 margin-top: 20px;
             }
             .active {
-                background: revert;
+                background: #666 !important;
+                color: white;
             }
         </style>
     </th:block>
@@ -169,11 +170,22 @@
                 <button type="button" class="btns mr-2" onclick="filterSelection('Casio')">Casio</button>
                 <button type="button" class="btns mr-2 " onclick="filterSelection('Titan')">Titan</button>
                 <span> |  &nbsp;</span>
-                <button type="button" class="btn btn-default mr-2" id="btn-sort-acs" onclick="sortByPrice('ASC')">
+                <button type="button" style="background: revert;padding: 5px;margin-bottom: 2px; width: 80px" id="gender-male"
+                        class="btn btn-default mr-2"  onclick="sortByGender('male')">
+                    Nam
+                    <i  aria-hidden="true"></i>
+                </button>
+                <button type="button" style="background: revert;padding: 5px;margin-bottom: 2px; width: 80px" id="gender-female"
+                        class="btn btn-default mr-2"  onclick="sortByGender('female')">
+                    Nữ
+                    <i  aria-hidden="true"></i>
+                </button>
+                <span> |  &nbsp;</span>
+                <button type="button" style="background: revert;padding: 5px;margin-bottom: 2px;" class="btn btn-default mr-2" id="btn-sort-acs" onclick="sortByPrice('ASC')">
                     Giá cao
                     <i class="fa fa-sort-amount-desc" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="btn btn-default mr-2" id="btn-sort-desc" onclick="sortByPrice('DESC')">
+                <button type="button" style="background: revert;padding: 5px;margin-bottom: 2px;" class="btn btn-default mr-2" id="btn-sort-desc" onclick="sortByPrice('DESC')">
                     Giá thấp
                     <i class="fa fa-sort-amount-desc" aria-hidden="true"></i>
                 </button>
@@ -206,22 +218,30 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript">
-        let brandCurrent = null;
+        let brandFilter = null;
+        let genderFilter = null;
+        let page = null;
         var priceSort = null;
 		var typeSort = null;
         loadData();
 
         function loadData() {
-            let datas = {}
-            this.getData(datas);
+            this.getData();
         }
 
-        function getData(datas) {
+        function getData() {
+            let dataRequest = {
+                brand: this.brandFilter,
+                gender: this.genderFilter,
+                sortBy: this.priceSort,
+                sortType: this.typeSort,
+                page: this.page,
+            };
             $.ajax({
                 url: '/api/product-filter',
                 type: 'post',
                 contentType: 'application/json',
-                data: JSON.stringify(datas),
+                data: JSON.stringify(dataRequest),
                 success: function (data) {
                     let html = [];
                     let htmlPage = [];
@@ -259,7 +279,7 @@
                     let pageNumber = Math.ceil(data.count / 12);
                     for (let count = 1; count <= pageNumber; count++) {
                         if (count == data.page) {
-                            htmlPage[count] = `<li class="page-item active" id="pagez-${count}" ><a class="page-link" onclick="getDataOfPage(${count})">${count}</a></li>`
+                            htmlPage[count] = `<li class="page-item active" id="pagez-${count}" ><a class="page-link">${count}</a></li>`
                         } else {
                             htmlPage[count] = `<li class="page-item" id="pagez-${count}" ><a class="page-link" onclick="getDataOfPage(${count})">${count}</a></li>`
                         }
@@ -285,15 +305,13 @@
 
 
         function filterSelection(c) {
-            let datas;
+            resetSortFilter();
             if (c === "all") {
-                datas = {};
-                this.brandCurrent = null;
+                this.brandFilter = null;
             } else {
-                datas = {brand: c};
-                this.brandCurrent = c;
+                this.brandFilter = c;
             }
-            this.getData(datas);
+            this.getData();
         }
 
         // Add active class to the current button (highlight it)
@@ -385,7 +403,13 @@
                 }
             }
         }
-
+        function resetSortFilter() {
+            this.page = 1;
+            this.priceSort = null;
+            this.typeSort = null;
+            document.getElementById("btn-sort-acs").classList.remove("active")
+            document.getElementById("btn-sort-desc").classList.remove("active")
+        }
 
         function checkUsers() {
             var result = "";
@@ -409,50 +433,28 @@
         }
 
         function getDataOfPage(page) {
-            let data;
-			if (typeof this.priceSort != "undefined") {
-				data = {
-					page: page,
-					sortBy: this.priceSort,
-					sortType: this.typeSort,
-				};
-			} else {
-				data = {
-					page: page,
-				};
-			}
-            this.getData(data);
+            this.page = page;
+            this.getData();
         }
 
         function getNextPage(page, totalPage) {
-			let data
             if (page >= totalPage) {
                 return;
 			}
-			if (this.priceSort !== null) {
-				data = {
-					page: page + 1,
-					sortBy: "price",
-					sortType: type,
-				};
-			} else {
-				data = {
-					page: page + 1,
-				};
-			}
-
-            this.getData(data);
+            this.page = page + 1;
+            this.getData();
         }
 
         function getPreviewPage(page) {
             if (page <= 1) {
                 return;
             }
-            let data = {page: page - 1};
-            this.getData(data);
+            this.page = page - 1;
+            this.getData();
         }
 
         function sortByPrice(type) {
+            this.page = 1;
             if (this.typeSort == type) {
                 this.priceSort = null;
                 this.typeSort = null;
@@ -460,12 +462,6 @@
                 this.priceSort = "price";
                 this.typeSort = type;
             }
-
-            let data = {
-                brand: this.brandCurrent,
-                sortBy: this.priceSort,
-                sortType: this.typeSort,
-            };
             if (this.priceSort == null) {
                 document.getElementById("btn-sort-acs").classList.remove("active")
                 document.getElementById("btn-sort-desc").classList.remove("active")
@@ -479,7 +475,29 @@
                     document.getElementById("btn-sort-desc").classList.remove("active");
                 }
             }
-            this.getData(data);
+            this.getData();
+        }
+        function sortByGender(gender) {
+            resetSortFilter();
+            if (this.genderFilter === gender) {
+                this.genderFilter = null;
+            } else if (this.genderFilter == null || this.genderFilter != gender) {
+                    this.genderFilter = gender;
+            }
+            if (this.genderFilter == null) {
+                document.getElementById("gender-male").classList.remove("active")
+                document.getElementById("gender-female").classList.remove("active")
+            } else {
+                if (this.genderFilter === 'male') {
+                    document.getElementById("gender-female").classList.remove("active");
+                    document.getElementById("gender-male").classList.add("active");
+                }
+                if (this.genderFilter === 'female') {
+                    document.getElementById("gender-female").classList.add("active");
+                    document.getElementById("gender-male").classList.remove("active");
+                }
+            }
+            this.getData();
         }
 
     </script>
