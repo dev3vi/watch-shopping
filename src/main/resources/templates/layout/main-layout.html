@@ -13,9 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
             crossorigin="anonymous"></script>
-    <!--  <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- 	<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> -->
     <link rel="stylesheet" href="/css/products/style.css">
     <th:block th:replace="${customStyle} ?: ~{}"></th:block>
 </head>
@@ -54,7 +52,7 @@
                         <!--end of col-->
                         <div class="col ">
                             <input class="form-control form-control-lg form-control-borderless" type="search" id="key"
-                                   placeholder="Search topics or keywords">
+                                   placeholder="Search topics or keywords" >
                         </div>
                         <!--end of col-->
                         <div class="col-auto">
@@ -121,7 +119,7 @@
         let a = checkUser();
         let html = "";
         if (a == "") {
-            html  = `<span class="hotline float-right">
+            html = `<span class="hotline float-right">
                             <a href="/login" class="login">
                             &#160<i class="fa fa-sign-in"></i>
                             Đăng Nhập &#160
@@ -156,7 +154,7 @@
 
     function checkUser() {
         var result = "";
-        var jwtToken =  localStorage.getItem('jwtToken');
+        var jwtToken = localStorage.getItem('jwtToken');
         $.ajax({
             url: "/api/get-user-info",
             async: false,
@@ -175,22 +173,18 @@
         }
     }
 
-    function logoutFunc(){
+    function logoutFunc() {
         localStorage.removeItem("jwtToken");
     }
 
-    function findProd(){
-        let data =  document.getElementById("key").value;
-        var jwtToken =  localStorage.getItem('jwtToken');
-        $.ajax({
-            url: "/api/get-item-by-key?key="+data,
-            async: false,
-            success: function (data) {
-                console.log(data);
-            }
-        });
-    }
+    function findProd() {
+        let data = document.getElementById("key").value;
+        var jwtToken = localStorage.getItem('jwtToken');
+        if (data !== "") {
+            window.location.href = "/?key=" + data;
+        }
 
+    }
 
 </script>
 

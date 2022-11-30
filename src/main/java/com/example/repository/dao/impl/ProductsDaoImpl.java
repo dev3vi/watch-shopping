@@ -58,5 +58,15 @@ public class ProductsDaoImpl implements ProductsDao {
         return null;
     }
 
+//    @Override
+//    public Products getProductByKey(String key) {
+//        if (key == null) {
+//            return null;
+//        }
+//        Integer index = getIndex(request);
+//        String sql = String.format("SELECT p FROM Product p WHERE p.slug like '%" + key + "'");
+//        List<ProductDetail> productDetails = (List<ProductDetail>) baseDaoService.getNativeQuery(sql.toString(), index);
+//    }
+
 
 }

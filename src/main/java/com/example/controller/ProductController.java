@@ -76,7 +76,14 @@ public class ProductController {
     }
 
     @PostMapping("/product-filter")
-    public ProductsResponse FilterProduct(@RequestBody ProductFilterRequest request) {
+    public ProductsResponse FilterProduct(@RequestBody ProductFilterRequest request,
+                                          @RequestParam(value = "key", required = false) String key) {
+        request.setKey(key);
         return productsDao.productFilter(request);
     }
+
+//    @GetMapping("/get-item-by-key")
+//    public Products getProductsByKey(@RequestParam(value = "key", required = true) String key) {
+//        return productsDao.getProductByKey(key);
+//    }
 }

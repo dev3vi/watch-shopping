@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductFilterRequest extends BaseRequest{
+    private String key;
     private String brand;
     private String gender;
 }

@@ -226,9 +226,11 @@
         loadData();
 
         function loadData() {
+            var url = new URL(window.location.href);
+            var key = url.searchParams.get("key");
+            console.log(key)
             this.getData();
         }
-
         function getData() {
             let dataRequest = {
                 brand: this.brandFilter,

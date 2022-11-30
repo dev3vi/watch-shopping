@@ -67,7 +67,7 @@ public class ViewController {
 		return "qlSanPham";
 	}
 	
-	@GetMapping("/")
+	@GetMapping("/{key}")
 	public String index() {
 		return "index";
 	}
