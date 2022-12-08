@@ -1,187 +1,488 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{layout/main-layout :: main-fragment(
+                                                ~{:: #custom-style},
+                                                ~{:: #main-content},
+                                                ~{:: #custom-script},
+                                               )}">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>LocalHost</title>
-	  <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-	<link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link rel="stylesheet"  href="/js/main.j">
-		<link rel="stylesheet" th:href="@{/style.css}">
-	<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+	<th:block id="custom-style">
+		<style>
+			.clear {
+				clear: both;
+			}
+
+			.links:hover {
+				text-decoration: none;
+			}
+
+			.links {
+
+				text-decoration: none;
+				color: #4d79ff;
+			}
+
+			.avatars {
+				width: 200px;
+				height: 216px;
+				margin-left: 10px;
+				overflow: hidden
+			}
+
+			.wrapper {
+				width: 240px;
+				height: 420px;
+				float: left;
+				/*border:  1px solid LightGray;*/
+				box-shadow: 0 0 8px 0px #888888;
+				color: black;
+				/*display: none; */
+				border-radius: 10px;
+				margin: 10px;
+			}
+
+			.wrapper:hover {
+				box-shadow: 0 0 12px 4px #888888;
+
+			}
+
+			.zoom {
+				transition: transform 0.2s;
+				width: 216px;
+				height: 200px;
+				margin: 15px 0px 15px 0px;
+			}
+
+			.zoom:hover {
+				transform: scale(1.05);
+			}
+
+			.sp0 {
+				margin-left: 35px
+			}
+
+			.buy {
+				margin-left: 70px;
+				padding: 6px 10px;
+				border: 1px solid #ccff99;
+				border-radius: 15px;
+			}
+
+			.buy:hover {
+				background-color: #ff3300;
+				color: white;
+			}
+
+			.side-bar {
+				height: 500px;
+				width: 390px;
+				float: left;
+				margin: 30px 30px;
+			}
+
+			.content {
+				margin: 30px 0px;
+				height: auto;
+				width: 970px;
+			}
+
+			.hr {
+				border-top: 1px solid red;
+				width: 300px;
+				margin: 0px 0px 10px 0px;
+			}
+
+			/* Style the buttons */
+			.btns {
+				border: none;
+				outline: none;
+				padding: 6px 16px;
+				background-color: #f1f1f1;
+				cursor: pointer;
+			}
+
+			.btns:hover {
+				background-color: #ddd;
+			}
+
+			.btns.activess {
+				background-color: #666;
+				color: white;
+				border: none;
+			}
+
+			.justify-content-end {
+				margin-top: 20px;
+			}
+			.active {
+				background: #666 !important;
+				color: white;
+			}
+		</style>
+	</th:block>
 </head>
 <body>
-	<div class="container-fluid">
 
-		<div class="row top-header" >
-			<div class="col-md-6">
-					<span class="hotline">
-					<i class="fas fa-phone"></i>
-					Hotline: 0975384162 &#160
-					</span>
-					<span class="address">
-					<i class="fas fa-map-marker-alt"></i>
-					Tòng Bạt, Ba Vì, Hà Nội
-					</span>
-			</div>
-			<div class="col-md-6 account">
-					<span class="hotline float-right">
-							<a href="/login" class="login">
-								&#160<i class="fas fa-sign-in-alt"></i>
-								Đăng Nhập &#160
-							</a>
-					</span>
-					<span class="address float-right">
-							<a href="/register"  class="register">
-							<i class="fa fa-key"></i>
-							Đăng Ký &#160 </a>
-					</span>
-			</div>
-		</div>
-		</div>
-		<div class="row">
-			<div class="logos">
-				<img src="/img/logo.png" class="logo">
-			</div>
+<div id="main-content" style="margin-top:10px">
+	<div class="container">
+			<div class="card card-register mx-auto mt-4">
+				<div class="card-header">Register an Account</div>
+				<div class="card-body">
 
-			<div class="search">
-			<div class="justify-content">
-                        <div class="col-search">
-                            <form class="card card-sm">
-                                <div class="card-body row no-gutters align-items-center">
-                                    <div class="col-auto">
-                                        <i class="fas fa-search h4 text-body"></i>
-                                    </div>
-                                    <!--end of col-->
-                                    <div class="col ">
-                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
-                                    </div>
-                                    <!--end of col-->
-                                    <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" type="submit">Search</button>
-                                    </div>
-                                    <!--end of col-->
-                                </div>
-                            </form>
-                        </div>
-                        <!--end of col-->
-                </div>
-    		</div>
-    		<div class="func">
-    			<div class="cart">
-    				<a href="#" style="text-decoration: none;">
-    					<i class="fa fa-shopping-cart cart-style" ></i>
-					<h6 style="width: 80px; margin: 0;padding: 0;">Giỏ hàng</h6>
-    				</a>			
+
+					<form th:object="${registerRequest}" action="/register" method="POST">
+						<div class="form-group">
+							<p style="text-align: center; color: red;" th:utext="${error}"></p>
+							<div class="form-label-group">
+								<label >User name</label>
+								<input type="text" class="form-control" placeholder="User name" th:field="*{username}">
+
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="form-row">
+								<div class="col-md-6">
+									<div class="form-label-group">
+										<label>Họ và Tên</label>
+										<input type="text" th:field="*{fullName}" class="form-control" placeholder="Nguyễn Văn A">
+
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-label-group">
+										<label >Số điện thoại</label>
+										<input type="number" th:field="*{numberPhone}" class="form-control" placeholder="Number Phone">
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="form-label-group">
+								<label >Email address</label>
+								<input type="email" th:field="*{email}" class="form-control" placeholder="Email address">
+								<small class="form-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="form-row">
+								<div class="col-md-6">
+									<div class="form-label-group">
+										<label  >Password</label>
+										<input type="password" th:field="*{password}" class="form-control" placeholder="Password">
+
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-label-group">
+										<label  >Confirm password</label>
+										<input type="password" th:field="*{repeatPassword}" class="form-control" placeholder="Confirm password" required="required">
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">Register</button>
+					</form>
+					<div class="text-center">
+						<a class="d-block small mt-3" href="login.html">Login Page</a>
+						<a class="d-block small" href="forgot-password.html">Forgot Password?</a>
+					</div>
 				</div>
-				<div class="order">
-					<a href="#" style="text-decoration: none;">
-					<i class="fas fa-shipping-fast ship-style"></i>
-					<h6 style="width: 100px; margin: 0;padding: 0;">Tra cứu đơn</h6></a>
-				</div>
-    		</div>
-		</div>
-		<div class="row menu">
-			<div class="list-menus">
-			<ul class="list-menu">
-			  <li><a href="#" >Trang chủ &#160</a></li>
-			  <li><a href="#" >Sản phẩm &#160</a></li>
-			  <li><a href="#" >Tin tức &#160</a></li>
-			  <li><a href="#" >Giới thiệu &#160</a></li>
-			  <li><a href="#" >Liên hệ &#160</a></li>
-			</ul>  
 			</div>
 		</div>
-		
-
-  <div class="container">
-    <div class="card card-register mx-auto mt-4">
-      <div class="card-header">Register an Account</div>
-      <div class="card-body">
-
-
-        <form th:object="${registerRequest}" action="/register" method="POST">
-          <div class="form-group">
-            <p style="text-align: center; color: red;" th:utext="${error}"></p>
-            <div class="form-label-group">
-              <label for="inputEmail">User name</label>
-             <input type="text" class="form-control" placeholder="User name" th:field="*{username}"> 
-              
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="form-row">
-              <div class="col-md-6">
-                <div class="form-label-group">
-                  <label>Họ và Tên</label>
-                  <input type="text" th:field="*{fullName}" class="form-control" placeholder="Nguyễn Văn A">
-                  
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-label-group">
-                  <label >Số điện thoại</label>
-                  <input type="number" th:field="*{numberPhone}" class="form-control" placeholder="Number Phone">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="form-label-group">
-              <label for="inputEmail">Email address</label>
-              <input type="email" th:field="*{email}" class="form-control" placeholder="Email address">
-              <small class="form-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="form-row">
-              <div class="col-md-6">
-                <div class="form-label-group">
-                  <label for="inputPassword" >Password</label>
-                  <input type="password" th:field="*{password}" class="form-control" placeholder="Password">
-                  
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-label-group">
-                  <label for="confirmPassword" >Confirm password</label>
-                 <input type="password" th:field="*{repeatPassword}" class="form-control" placeholder="Confirm password" required="required">
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary">Register</button>
-        </form>
-        <div class="text-center">
-          <a class="d-block small mt-3" href="login.html">Login Page</a>
-          <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  	<div class="footer">
-		<h3 style="color: white; margin-left: 20px;"><br>Demo web bán hàng</h3>
-		<div class="f1">
-			<ul>
-				<li><p>Trụ sở: 30 Trần Phú, P. Mộ Lao, Hà Đông, Hà Nội</p></li>
-				<li><p>Giấy phép xuất bản số 616/GP-BTTTT cấp ngày 06/11/2015, tại Bộ Thông tin và Truyền thông</p></li>
-				<li><p>Nội dung: Nhóm 20</p></li>
-				<li><p>Thiết kế, Code: Lương Văn Thảo</p></li>
-				<li><p>Điện thoại: 024.23123123 – Fax: 024.12341234.</p></li>
-				<li><p>Email: gmail@ptit.com</p></li>
-			</ul>
-			
-		</div>
-	</div>
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+</div>
 
 </body>
-<script type="text/javascript">
-	
-</script>
+<th:block id="custom-script">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script type="text/javascript">
+		let brandFilter = null;
+		let genderFilter = null;
+		let page = null;
+		var priceSort = null;
+		var typeSort = null;
+		loadData();
+
+		function loadData() {
+			var url = new URL(window.location.href);
+			var key = url.searchParams.get("key");
+			console.log(key)
+			this.getData();
+		}
+		function getData() {
+			let dataRequest = {
+				brand: this.brandFilter,
+				gender: this.genderFilter,
+				sortBy: this.priceSort,
+				sortType: this.typeSort,
+				page: this.page,
+			};
+			$.ajax({
+				url: '/api/product-filter',
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify(dataRequest),
+				success: function (data) {
+					let html = [];
+					let htmlPage = [];
+					$('.sp').empty()
+					$('#pageNumber').empty()
+					$('#pageNumber').append(`
+				<li class="page-item" id="previewPage">
+					<a class="page-link" tabindex="-1" onclick="getPreviewPage(${data.page})">&laquo; Previous</a>
+				</li>
+				`)
+					let i = 0;
+					data.products.forEach(element => {
+						x = element.price.toLocaleString('vi', {style: 'currency', currency: 'vnd'});
+						html[i] = `<div class="wrapper ${element.brands}">
+                                  <div class="ava-name">
+                                      <div class="avatars">
+                                          <a class="links" href="/products/${element.slug}"><img class="zoom" src="${element.image}"></a>
+                                      </div>
+                                      <div class="name" style="margin:12px 8px 8px 30px">
+                                          <strong ><a class="links" href="#">${element.name}</a></strong>
+                                      </div>
+                                  </div>
+                                  <div class="sp0" style="width: 200px; height:  110px;margin: auto">
+                                          <p style="margin: 10px 0px 0px 8px; color: red"><strong>${x}</strong><span>
+                                          <i class='fas fa-shipping-fast' style='font-size:22px;color:red; float:right;'></i></span></p>
+                                          <p style="margin: 8px 0px 10px 8px;">Loại: ${element.productType}</p>
+                                          <button type="button" class="btn btn-warning" onclick="addCart(${element.id})" style="margin-left:55px; padding: 3px">Add Cart</button>
+                                  </div>
+                              </div>`
+						i += 1;
+					});
+					for (let j = 0; j <= i; j++) {
+						$('.sp').append(html[j]);
+					}
+					let pageNumber = Math.ceil(data.count / 12);
+					for (let count = 1; count <= pageNumber; count++) {
+						if (count == data.page) {
+							htmlPage[count] = `<li class="page-item active" id="pagez-${count}" ><a class="page-link">${count}</a></li>`
+						} else {
+							htmlPage[count] = `<li class="page-item" id="pagez-${count}" ><a class="page-link" onclick="getDataOfPage(${count})">${count}</a></li>`
+						}
+					}
+					for (let count = 1; count <= pageNumber; count++) {
+						$('#pageNumber').append(htmlPage[count]);
+					}
+					$('#pageNumber').append(`
+				<li class="page-item" id="nextPage">
+					<a class="page-link" tabindex="-1" onclick="getNextPage(${data.page}, ${pageNumber})">Next &raquo;</a>
+				</li>
+				`)
+					if (data.page == 1) {
+						document.getElementById("previewPage").classList.add("disabled");
+					}
+					if (data.page == pageNumber) {
+						document.getElementById("nextPage").classList.add("disabled");
+					}
+					loadCart();
+				}
+			});
+		}
+
+
+		function filterSelection(c) {
+			resetSortFilter();
+			if (c === "all") {
+				this.brandFilter = null;
+			} else {
+				this.brandFilter = c;
+			}
+			this.getData();
+		}
+
+		// Add active class to the current button (highlight it)
+		var btnContainer = document.getElementById("myBtnContainer");
+		var btns = btnContainer.getElementsByClassName("btns");
+		for (var i = 0; i < btns.length; i++) {
+			btns[i].addEventListener("click", function () {
+				var current = document.getElementsByClassName("activess");
+				current[0].className = current[0].className.replace(" activess", "");
+				this.className += " activess";
+			});
+		}
+
+		var key = 'cart';
+		var value = localStorage.getItem(key);
+		var count;
+		if (value) {
+			listItem = value.split(",");
+		} else {
+			listItem = [];
+		}
+		var username = checkUsers();
+
+		function loadCart() {
+			if (username == "") {
+				count = listItem.length;
+				document.getElementById("count").innerHTML = "(" + count + ")";
+			} else {
+				$.ajax({
+					url: "/api/get-user-info",
+					async: false,
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded",
+						"Authorization": "Bearer " + localStorage.getItem('jwtToken')
+					},
+					success: function (data) {
+						$.ajax({
+							url: "/api/get-item-by-username?username=" + data,
+							async: false,
+							headers: {
+								"Content-Type": "application/x-www-form-urlencoded",
+								"Authorization": "Bearer " + localStorage.getItem('jwtToken')
+							},
+							success: function (res) {
+								count = res.length;
+								document.getElementById("count").innerHTML = "(" + count + ")";
+							}
+						});
+					}
+				});
+			}
+		}
+
+		function addCart(id) {
+			if (username == "") {
+				if (check(listItem, id) == 1) {
+					alert("Sản phẩm đã có trong giỏ hàng!");
+				} else {
+					alert("Thêm vào giỏ hàng thành công!");
+					listItem.push(id);
+					localStorage.setItem(key, listItem);
+					loadCart();
+				}
+				;
+			} else {
+				let data = {
+					username: username,
+					idItem: id
+				}
+				$.ajax({
+					method: 'post',
+					url: '/api/add-item-username',
+					contentType: 'application/json',
+					data: JSON.stringify(data),
+					success: res => {
+						alert("Thêm vào giỏ hàng thành công!");
+						loadCart();
+					}
+				});
+
+			}
+
+		}
+
+		function check(listItem, id) {
+			for (let i = 0; i < listItem.length; i++) {
+				if (listItem[i] == id) {
+					return 1;
+				}
+			}
+		}
+		function resetSortFilter() {
+			this.page = 1;
+			this.priceSort = null;
+			this.typeSort = null;
+			document.getElementById("btn-sort-acs").classList.remove("active")
+			document.getElementById("btn-sort-desc").classList.remove("active")
+		}
+
+		function checkUsers() {
+			var result = "";
+			var jwtToken = localStorage.getItem('jwtToken');
+			$.ajax({
+				url: "/api/get-user-info",
+				async: false,
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+					"Authorization": "Bearer " + jwtToken
+				},
+				success: function (data) {
+					result = data;
+				}
+			});
+			if (result == null) {
+				return "";
+			} else {
+				return result;
+			}
+		}
+
+		function getDataOfPage(page) {
+			this.page = page;
+			this.getData();
+		}
+
+		function getNextPage(page, totalPage) {
+			if (page >= totalPage) {
+				return;
+			}
+			this.page = page + 1;
+			this.getData();
+		}
+
+		function getPreviewPage(page) {
+			if (page <= 1) {
+				return;
+			}
+			this.page = page - 1;
+			this.getData();
+		}
+
+		function sortByPrice(type) {
+			this.page = 1;
+			if (this.typeSort == type) {
+				this.priceSort = null;
+				this.typeSort = null;
+			} else if (this.priceSort == null || this.typeSort != type) {
+				this.priceSort = "price";
+				this.typeSort = type;
+			}
+			if (this.priceSort == null) {
+				document.getElementById("btn-sort-acs").classList.remove("active")
+				document.getElementById("btn-sort-desc").classList.remove("active")
+			} else {
+				if (this.typeSort == 'DESC') {
+					document.getElementById("btn-sort-acs").classList.remove("active");
+					document.getElementById("btn-sort-desc").classList.add("active");
+				}
+				if (this.typeSort == 'ASC') {
+					document.getElementById("btn-sort-acs").classList.add("active");
+					document.getElementById("btn-sort-desc").classList.remove("active");
+				}
+			}
+			this.getData();
+		}
+		function sortByGender(gender) {
+			resetSortFilter();
+			if (this.genderFilter === gender) {
+				this.genderFilter = null;
+			} else if (this.genderFilter == null || this.genderFilter != gender) {
+				this.genderFilter = gender;
+			}
+			if (this.genderFilter == null) {
+				document.getElementById("gender-male").classList.remove("active")
+				document.getElementById("gender-female").classList.remove("active")
+			} else {
+				if (this.genderFilter === 'male') {
+					document.getElementById("gender-female").classList.remove("active");
+					document.getElementById("gender-male").classList.add("active");
+				}
+				if (this.genderFilter === 'female') {
+					document.getElementById("gender-female").classList.add("active");
+					document.getElementById("gender-male").classList.remove("active");
+				}
+			}
+			this.getData();
+		}
+
+	</script>
+</th:block>
 </html>
