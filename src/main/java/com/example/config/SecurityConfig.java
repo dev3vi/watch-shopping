@@ -78,13 +78,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .oauth2Login()
                 .successHandler((request, response, authentication) -> {
-//                    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//                    String username = userDetails.getUsername();
-//                    tokenProvider.createToken(username);
-//                    PrintWriter out = response.getWriter();
-//                    out.write(tokenProvider.createToken(username));
-//                    out.flush();
-//                    out.close();
                     new RedirectServerAuthenticationSuccessHandler("http://localhost:8080/index");
                 })
                 .loginPage("/login")
