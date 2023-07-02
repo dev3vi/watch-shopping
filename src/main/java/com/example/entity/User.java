@@ -37,7 +37,7 @@ public class User {
 	private String username;
 	
 	@Column(name="hash_password")
-	private String hashPassword;
+	private String password;
 
 	private String fullName;
 	

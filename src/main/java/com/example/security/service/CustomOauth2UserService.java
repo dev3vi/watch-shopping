@@ -62,7 +62,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService implements
 		User user = new User();
 		
 		user.setUsername(oAuth2UserInfo.getId());
-		user.setHashPassword(passwordEncoder.encode("123456"));
+		user.setPassword(passwordEncoder.encode("123456"));
 		user.setType(UserType.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
 		user.setFullName(oAuth2UserInfo.getName());
 		user.setAvatar(oAuth2UserInfo.getImageUrl());

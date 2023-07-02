@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, String>{
 	
 	//boolean checkEmailsExits(null, null);
 	
-	Optional<User> findByUsernameAndHashPassword(String username, String password);
+	Optional<User> findByUsernameAndPassword(String username, String password);
 	
 	@Query("select u.username from User u where u.email=:email")
 	Optional<String> checkEmailsExits(String email);

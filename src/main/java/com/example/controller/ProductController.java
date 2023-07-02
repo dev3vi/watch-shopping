@@ -82,8 +82,4 @@ public class ProductController {
         return productsDao.productFilter(request);
     }
 
-//    @GetMapping("/get-item-by-key")
-//    public Products getProductsByKey(@RequestParam(value = "key", required = true) String key) {
-//        return productsDao.getProductByKey(key);
-//    }
 }

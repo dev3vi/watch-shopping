@@ -1,88 +1,95 @@
 package com.example.config;
 
+import com.example.security.jwt.JwtAuthenticationFilter;
 import com.example.security.jwt.JwtFilter;
 import com.example.security.jwt.TokenProvider;
-import com.example.security.service.CustomOauth2UserService;
+import com.example.security.service.TokenService;
 import com.example.security.service.UserDetailServiceImpl;
-import com.nimbusds.jose.shaded.json.JSONObject;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.PrintWriter;
+import java.util.Collections;
 
-@Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Value("http://127.0.0.1:8090")
+    private String corsAllowedOrigins;
+    private final TokenProvider tokenProvider;
+    private final TokenService tokenService;
     private final UserDetailServiceImpl userDetailService;
 
-    private final CustomOauth2UserService customOauth2UserService;
-
-    private final JwtFilter jwtFilter;
-
-    private final TokenProvider tokenProvider;
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailService).passwordEncoder(new BCryptPasswordEncoder());
-    }
-
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring()
-                .antMatchers(HttpMethod.GET, "/css/**")
-                .antMatchers("/img/**")
-                .antMatchers("/js/**");
+    public SecurityConfig(TokenProvider tokenProvider,
+                          TokenService tokenService,
+                          UserDetailServiceImpl userDetailService) {
+        this.tokenProvider = tokenProvider;
+        this.tokenService = tokenService;
+        this.userDetailService = userDetailService;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http
+                .cors()
+                .configurationSource(this.corsConfigurationSource())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/login", "/", "/register", "/api").permitAll()
-                .and()
-                .oauth2Login()
-                .successHandler((request, response, authentication) -> {
-                    new RedirectServerAuthenticationSuccessHandler("http://localhost:8080/index");
-                })
-                .loginPage("/login")
-                .userInfoEndpoint()
-                .userService(customOauth2UserService);
+                .antMatchers("/api/authenticate").permitAll()
+                .antMatchers("/**")
+                .permitAll()
+                .antMatchers(
+                        "/", "/favicon.ico",
+                        "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg",
+                        "/**/*.html", "/**/*.css", "/**/*.js"
+                ).permitAll()
+                .anyRequest().authenticated()
+                .and().logout()
+                .and().csrf().disable()
+                .addFilterBefore(new JwtFilter(tokenProvider, userDetailService), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(new JwtAuthenticationFilter(userDetailService, tokenProvider, tokenService, passwordEncoder()))
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.headers().frameOptions().disable();
+    }
 
+    @Autowired
+    public void configureAuth(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailService).passwordEncoder(bcryptPasswordEncoder());
+    }
+
+    @Autowired
+    public BCryptPasswordEncoder bcryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    private CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
+        corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
+        corsConfiguration.addExposedHeader("Authorization");
+        corsConfiguration.addAllowedOrigin(corsAllowedOrigins);
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setExposedHeaders(Collections.singletonList("Content-Disposition"));
+        UrlBasedCorsConfigurationSource corsSource = new UrlBasedCorsConfigurationSource();
+        corsSource.registerCorsConfiguration("/**", corsConfiguration);
+        return corsSource;
     }
 }

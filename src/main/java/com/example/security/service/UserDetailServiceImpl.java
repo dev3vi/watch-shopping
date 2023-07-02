@@ -32,7 +32,7 @@ public class UserDetailServiceImpl implements UserDetailsService{
 		List<GrantedAuthority> roleList = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getRoleCode().toString()));
 		
 		//create spring security user
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getHashPassword(),roleList);
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), roleList);
 	
 	}
 

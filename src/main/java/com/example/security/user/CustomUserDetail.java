@@ -45,14 +45,14 @@ public class CustomUserDetail implements UserDetails, OAuth2User{
 	public static CustomUserDetail createCustomUser(User user,Map<String, Object> attributes) {
 		List<GrantedAuthority> authorities = Collections.
 				singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-		return new CustomUserDetail(user.getUsername(), user.getHashPassword(),
+		return new CustomUserDetail(user.getUsername(), user.getPassword(),
 				user.getFullName(), user.getType(), user.getAvatar(),authorities, attributes);
 	}
 	
 	public static CustomUserDetail createCustomUser(User user) {
 		List<GrantedAuthority> authorities = Collections.
 				singletonList(new SimpleGrantedAuthority(user.getRole().getRoleCode().toString()));
-		return new CustomUserDetail(user.getUsername(), user.getHashPassword(),
+		return new CustomUserDetail(user.getUsername(), user.getPassword(),
 				user.getFullName(), user.getType(), user.getAvatar(),authorities, null);
 	}
 

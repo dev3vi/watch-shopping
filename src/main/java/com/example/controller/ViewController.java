@@ -5,6 +5,7 @@ import com.example.dto.RegisterRequest;
 import com.example.service.AuthenService;
 import com.example.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +20,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class ViewController {
 
-	private final AuthenService authenService;
+//	private final AuthenService authenService;
 	
 	private final ProductService productService;
 	
@@ -50,19 +51,20 @@ public class ViewController {
 		return "register";
 	}
 
-	@PostMapping("/register")
-	public String doRegister(HttpServletRequest request, Model model, @Valid RegisterRequest registerRequest,
-			BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return "register";
-		}
-		if (!authenService.registerUser(request, model, registerRequest)) {
-			return "register";
-		}
-		return "redirect:/login";
-
-	}
+//	@PostMapping("/register")
+//	public String doRegister(HttpServletRequest request, Model model, @Valid RegisterRequest registerRequest,
+//			BindingResult bindingResult) {
+//		if (bindingResult.hasErrors()) {
+//			return "register";
+//		}
+//		if (!authenService.registerUser(request, model, registerRequest)) {
+//			return "register";
+//		}
+//		return "redirect:/login";
+//
+//	}
 	@GetMapping("/adminProducts")
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public String adminPage() {
 		return "qlSanPham";
 	}
